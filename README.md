@@ -1,6 +1,6 @@
 # SoundCloud Combined Patches (Morphe)
 
-Combined SoundCloud (`com.soundcloud.android`) patches for use with [Morphe](https://morphe.software), featuring full Vietnamese localization, Android Auto Home, privacy/ad removal, AMOLED black-and-orange styling, Cast icon removal, and client-side Go+ caching.
+Combined SoundCloud (`com.soundcloud.android`) patches for use with [Morphe](https://morphe.software), featuring full Vietnamese localization, Android Auto Home, privacy/ad removal, AMOLED black-and-orange styling, optional Cast and Message icon removal, and client-side Go caching.
 
 ## Add Source to Morphe
 
@@ -18,13 +18,13 @@ Or add the repository URL manually in **Morphe Manager → Settings → Sources*
 
 | App | Package Name | Format | Target Version | Version Code | Min SDK |
 |---|---|---|---|---|---|
-| SoundCloud | `com.soundcloud.android` | `APKM` | `2026.11.02-release` | `379060` | `29` (Android 10+) |
+| SoundCloud | `com.soundcloud.android` | `APKM` | `2026.11.16-release` | `381070` | `29` (Android 10+) |
 
-*(Note: Both Android 10+ and Android 9+ 2-arch APKM variants sharing build `379060` and official SoundCloud signing certificate `aff930d671fa0a57b8c41d1678cc2a8ea717075a74e346942a140afa441339d2` are accepted.)*
+*(Note: Official SoundCloud APKM builds sharing version `2026.11.16-release` / build `381070` and signing certificate `aff930d671fa0a57b8c41d1678cc2a8ea717075a74e346942a140afa441339d2` are accepted.)*
 
 ---
 
-## Included Patches (`8/8` Enabled by Default)
+## Included Patches (`9` Patches — `7` Enabled by Default, `2` Opt-in)
 
 <!-- PATCHES_START EXPANDED -->
 > **[v1.0.0](https://github.com/longthree1/morphe-patches/releases/tag/v1.0.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;8 patches total
@@ -57,9 +57,9 @@ Or add the repository URL manually in **Morphe Manager → Settings → Sources*
 ## Feature Summary & Limitations
 
 ### Vietnamese language
-- Adds **2,760 translated strings** and **64 plural rules** (`res/values-vi/`).
+- Adds **2,783 translated strings** and **64 plural rules** (`res/values-vi/`).
 - Enables **Tiếng Việt** directly inside SoundCloud **Basic settings → Language** via Android 13+ per-app language (`res/xml/locales_config.xml`), and follows Vietnamese system language automatically.
-- Translates recognized server-provided Discover/Search UI labels, headers, banners, filters, and tabs at display time while preserving track titles, playlist titles, artist names, genres, and search queries.
+- Translates recognized server-provided Discover/Search UI labels, headers, banners, filters, tabs, and system playlist prefixes (`Liked By`) at display time while preserving track titles, user playlist titles, artist names, genres, and search queries.
 
 ### Home in Android Auto
 - Populates the Android Auto **Home** tab with regular cover tiles from your phone Home SDUI feed using your logged-in account (tracks, mixes, artists play; playlists and albums browse).
@@ -78,15 +78,18 @@ Or add the repository URL manually in **Morphe Manager → Settings → Sources*
 - Replaces dark mode backgrounds, `BottomTabBarRestyle`, dialogs, and the mini-player footer (`bth_footer_shape`) with pure black (`#000000`) for AMOLED displays while **preserving SoundCloud's signature orange accents**.
 
 ### Hide Cast icon
-- Hides the Google Cast button in both toolbar menus and `ThemeableMediaRouteButton` views.
+- Hides the Google Cast button in both toolbar menus and `ThemeableMediaRouteButton` views *(disabled by default / opt-in in Expert Mode)*.
 
-### Enable SoundCloud Go+ (experimental)
+### Hide Message icon
+- Hides SoundCloud's direct message / inbox icon on user and artist profile headers (`ProfileHeaderKt`, `HeaderWidgetKt`) as well as the top toolbar (`TitleBarInboxController`, `TitleBarInboxView`) *(disabled by default / opt-in in Expert Mode)*.
+
+### Enable SoundCloud Go
 - Forces client-side `offline_sync`, `no_audio_ads`, and `hq_audio` feature flags (`GoFeatures`) and displays Go+ tier status (`UserConsumerPlan`, `Tier.HIGH`) to unlock the native offline track/playlist caching UI.
 
 > [!WARNING]
 > **Go+ Limitations — High-Quality Streaming & High-Quality Downloads Do NOT Work**
 >
-> Enabling `Enable SoundCloud Go+ (experimental)` only modifies client-side feature flags:
+> Enabling `Enable SoundCloud Go` only modifies client-side feature flags:
 > - **What works:** Go+ UI badge, upsell gate bypass, and **standard-quality (`sq`) offline caching** via SoundCloud's native offline storage.
 > - **What does NOT work:** **High-quality audio streaming (`HQ` / 256 kbps AAC / lossless) and high-quality downloads do NOT work.** Stream quality tiers and HQ audio URLs are validated and gated on SoundCloud's servers; selecting "High" in streaming/download settings still resolves standard-quality (`sq`) streams on free accounts.
 
