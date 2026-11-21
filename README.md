@@ -57,7 +57,7 @@ Or add the repository URL manually in **Morphe Manager → Settings → Sources*
 
 ## Feature Summary & Limitations
 
-### Vietnamese language
+### Russian language
 - Adds **2,783 translated strings** and **64 plural rules** (`res/values-vi/`).
 - Enables **Tiếng Việt** directly inside SoundCloud **Basic settings → Language** via Android 13+ per-app language (`res/xml/locales_config.xml`), and follows Vietnamese system language automatically.
 - Translates recognized server-provided Discover/Search UI labels, headers, banners, filters, tabs, and system playlist prefixes (`Liked By`) at display time while preserving track titles, user playlist titles, artist names, genres, and search queries.
