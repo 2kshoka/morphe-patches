@@ -6,8 +6,8 @@ import org.w3c.dom.Element
 
 @Suppress("unused")
 val vietnameseLanguagePatch = resourcePatch(
-    name = "Vietnamese language",
-    description = "Adds Vietnamese UI resources and known server-provided interface labels, preserves content titles, and enables Tiếng Việt in app locale selection.",
+    name = "Russian language",
+    description = "Adds Russian UI resources and known server-provided interface labels, preserves content titles, and enables russian in app locale selection.",
     default = true,
 ) {
     compatibleWith(soundcloud)
