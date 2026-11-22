@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.Map;
 
 /** Translates only known UI labels in section metadata, never track/user entities. */
-public final class VietnameseLabels {
+public final class  RussianLabels {
     private static final Map<String, String> LABELS;
     private static final Map<String, String> SYSTEM_PLAYLIST_LABELS;
     static {
@@ -201,12 +201,12 @@ public final class VietnameseLabels {
 
     static String translateChoiceForLanguage(String text, String language) {
         // Search tabs have a fixed, narrow width; keep the full phrase in section headers.
-        if ("vi".equals(language) && text != null && "playlists".equalsIgnoreCase(text)) return "Плейлисты";
+        if ("ru".equals(language) && text != null && "playlists".equalsIgnoreCase(text)) return "Плейлисты";
         return translateForLanguage(text, language);
     }
 
     static String translateSystemPlaylistForLanguage(String text, String language) {
-        if (text == null || !"vi".equals(language)) return text;
+        if (text == null || !"ru".equals(language)) return text;
         String exact = SYSTEM_PLAYLIST_LABELS.get(text);
         if (exact == null) exact = SYSTEM_PLAYLIST_LABELS.get(text.toLowerCase(Locale.ROOT));
         if (exact != null) return exact;
@@ -222,7 +222,7 @@ public final class VietnameseLabels {
     }
 
     static String translateForLanguage(String text, String language) {
-        if (text == null || !"vi".equals(language)) return text;
+        if (text == null || !"ru".equals(language)) return text;
         String translated = LABELS.get(text);
         if (translated == null) translated = LABELS.get(text.toLowerCase(Locale.ROOT));
         if (translated != null) return translated;
@@ -265,5 +265,5 @@ public final class VietnameseLabels {
         return text;
     }
 
-    private VietnameseLabels() {}
+    private RussianLabels() {}
 }
