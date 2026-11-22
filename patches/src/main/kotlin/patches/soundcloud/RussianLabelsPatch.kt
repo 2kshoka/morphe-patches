@@ -115,7 +115,7 @@ internal val vietnameseUiLabelsPatch = bytecodePatch {
             for (hook in hooks.sortedByDescending { it.index }) {
                 val register = "v${hook.register}"
                 mutable.addInstructions(hook.index, """
-                    invoke-static/range {$register .. $register}, Lnl/johninnl/soundcloud/VietnameseLabels;->${hook.function}(Ljava/lang/String;)Ljava/lang/String;
+                    invoke-static/range {$register .. $register}, Lnl/johninnl/soundcloud/RussianLabels;->${hook.function}(Ljava/lang/String;)Ljava/lang/String;
                     move-result-object $register
                 """.trimIndent())
                 hooked++
