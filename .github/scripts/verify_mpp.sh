@@ -12,7 +12,7 @@ if [ -z "${MPP:-}" ] || [ ! -f "$MPP" ]; then
 fi
 
 entries=$(unzip -Z1 "$MPP")
-for required in extensions/soundcloud.mpe soundcloud/strings-vi.xml soundcloud/plurals-vi.xml; do
+for required in extensions/soundcloud.mpe soundcloud/strings-ru.xml soundcloud/plurals-ru.xml; do
   if ! printf '%s\n' "$entries" | grep -Fxq "$required"; then
     echo "Missing required MPP entry: $required" >&2
     exit 1
@@ -40,7 +40,7 @@ expected = sorted([
     "Hide Message icon",
     "Home in Android Auto",
     "Remove ads and upsells",
-    "Vietnamese language",
+    "Russian language",
 ])
 assert names == expected, f"Unexpected patch list: {names} != {expected}"
 non_default = sorted(p["name"] for p in patches if not p.get("default"))
@@ -50,4 +50,4 @@ print(f"Verified {len(patches)} patches in patches-list.json (7 default=true, 2 
 PY
 
 echo "Verified MPP bundle entries in $MPP:"
-printf '%s\n' "$entries" | grep -E '^(extensions/soundcloud\.mpe|soundcloud/(strings|plurals)-vi\.xml)$'
+printf '%s\n' "$entries" | grep -E '^(extensions/soundcloud\.mpe|soundcloud/(strings|plurals)-ru\.xml)$'
