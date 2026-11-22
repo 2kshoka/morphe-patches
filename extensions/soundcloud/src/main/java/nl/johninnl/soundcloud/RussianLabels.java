@@ -184,9 +184,9 @@ public final class  RussianLabels {
             {"Sports", "Спорт"}, {"Religion & Spirituality", "Религия & духовность"},
             {"Entertainment", "Развлечения"}, {"Learning", "Обучение"},
             {"Mutual", "Общие подписчики"}, {"My tracks for sale", "Мои треки на продажу"},
-            {"View in Collection", "Посмотреть в Коллекции"}
+            {"View in Collection", "Посмотреть в Коллекции"},
           {"Studio", "Студия"},
-          {"Hot For You 🔥", "Специально для вас 🔥"},
+          {"Hot For You ", "Специально для вас "},
           {"people just liked this track", "понравился этот трек"},
           {"Your Discoveries", "Подборки треков"},
           {"Deep cuts", "Нишевые"},
