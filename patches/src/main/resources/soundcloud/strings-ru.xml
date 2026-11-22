@@ -145,7 +145,7 @@
     <string name="accessibility_user_label_new_tracks">Новые треки</string>
     <string name="accessibility_user_profile">%s, профиль</string>
     <string name="accessibility_verified_badge">Подтверждён</string>
-    <string name="accessibility_your_likes_title">Понравившиеся треки</string>
+    <string name="accessibility_your_likes_title">Лайки</string>
     <string name="action_retry">Повторить</string>
     <string name="activity_feed_empty_screen_all_notifications">Показать все уведомления</string>
     <string name="activity_feed_empty_screen_filtered_description">Переключитесь на «Все», чтобы увидеть недавние уведомления</string>
@@ -167,7 +167,7 @@
     <string name="add_music_recommended_tracks_generic_error_description">Мы уже занимаемся этим. Повторите попытку.</string>
     <string name="add_music_recommended_tracks_generic_error_tagline">Что-то пошло не так</string>
     <string name="add_music_tab_liked">Понравившиеся</string>
-    <string name="add_music_tab_listening_history">История прослушивания</string>
+    <string name="add_music_tab_listening_history">История</string>
     <string name="add_music_tab_recommended">Рекомендуемые</string>
     <string name="add_music_toolbar_title">Добавить музыку</string>
     <string name="add_named_track_to_playlist_success">%1$s добавлен в %2$s</string>
@@ -458,12 +458,12 @@
     <string name="collections_recently_played_clear_dialog_title">Очистить недавно воспроизведённое?</string>
     <string name="collections_recently_played_clear_error_message">Не удалось очистить недавно воспроизведённое. Повторите попытку позже.</string>
     <string name="collections_recently_played_empty">Здесь вы найдёте всё, что недавно воспроизводили.</string>
-    <string name="collections_recently_played_header">Недавно воспроизведённые</string>
+    <string name="collections_recently_played_header">Недавние</string>
     <string name="collections_remove_filters">Сбросить фильтры</string>
     <string name="collections_stations_header">Станции</string>
     <string name="collections_upsell_body">Слушайте свои лайки, плейлисты и альбомы офлайн и без рекламы</string>
     <string name="collections_upsell_title">Оформить SoundCloud Go+</string>
-    <string name="collections_your_liked_tracks">Понравившиеся треки</string>
+    <string name="collections_your_liked_tracks">Лайки</string>
     <string name="comment_deleted">Вы удалили этот комментарий</string>
     <string name="comment_input_hint">Комментарий на</string>
     <string name="comment_posted">Комментарий добавлен</string>
@@ -593,13 +593,13 @@
     <string name="default_activity_feed_activity_on">на</string>
     <string name="default_activity_feed_username_and_x_others_reacted_to">и ещё %d чел. отреагировали на</string>
     <string name="default_activity_feed_username_commented">оставил(а) комментарий</string>
-    <string name="default_activity_feed_username_followed_you">подписался(-ась) на вас</string>
-    <string name="default_activity_feed_username_liked_playlist">поставил(а) лайк вашему плейлисту</string>
-    <string name="default_activity_feed_username_liked_track">поставил(а) лайк вашему треку</string>
+    <string name="default_activity_feed_username_followed_you">подписался на вас</string>
+    <string name="default_activity_feed_username_liked_playlist">лайкнул ваш плейлист</string>
+    <string name="default_activity_feed_username_liked_track">лайкнул ваш трек</string>
     <string name="default_activity_feed_username_mentioned">упомянул(а) вас</string>
     <string name="default_activity_feed_username_reacted_to">отреагировал(а) на</string>
-    <string name="default_activity_feed_username_reposted_playlist">сделал(а) репост вашего плейлиста</string>
-    <string name="default_activity_feed_username_reposted_track">сделал(а) репост вашего трека</string>
+    <string name="default_activity_feed_username_reposted_playlist">репостнул ваш плейлист</string>
+    <string name="default_activity_feed_username_reposted_track">репостнул ваш трек</string>
     <string name="default_call_to_action">Перейти на сайт</string>
     <string name="default_companion_banner_message">Короткое сообщение
 от рекламодателей</string>
@@ -620,8 +620,8 @@
     <string name="delete_track_title">Удалить этот трек?</string>
     <string name="deleted_user_toast_message">Этот пользователь удалён.</string>
     <string name="deleted_username">Удалённый пользователь</string>
-    <string name="description_show_less">Показать меньше</string>
-    <string name="description_show_more">Показать больше</string>
+    <string name="description_show_less">Скрыть</string>
+    <string name="description_show_more">Читать далее...</string>
     <string name="dev_drawer_action_app_features_key">app_features</string>
     <string name="dev_drawer_action_app_features_title">Функции приложения</string>
     <string name="device_management_conflict_message">Так как вы достигли лимита зарегистрированных устройств, мы вышли из аккаунта и отменили регистрацию этого устройства. Всё скачанное удалено. Чтобы зарегистрировать устройство снова, сначала нужно войти в аккаунт.</string>
@@ -645,7 +645,7 @@
     <string name="donation_support_description">Покажите любовь к своим любимым артистам. Перейдите по этой ссылке на их собственную страницу поддержки.</string>
     <string name="done">Готово</string>
     <string name="download_playlist">Скачать</string>
-    <string name="download_search_hint">Поиск в загрузках</string>
+    <string name="download_search_hint">Поиск</string>
     <string name="downloads_options_filter_albums">Альбомы</string>
     <string name="downloads_options_filter_all">Все загрузки</string>
     <string name="downloads_options_filter_playlists">Плейлисты</string>
@@ -681,7 +681,7 @@
     <string name="edit_playlist_undo_removal_action">Отменить</string>
     <string name="edit_playlist_undo_removal_message">Трек удалён</string>
     <string name="edit_profile_action">Изменить профиль</string>
-    <string name="edit_profile_title">Изменение профиля</string>
+    <string name="edit_profile_title">Редактирование</string>
     <string name="edit_spotlight">Изменить Spotlight</string>
     <string name="edit_updating">Сохранение</string>
     <string name="edited_success">Изменения сохранены. Их появление может занять некоторое время.</string>
@@ -719,7 +719,7 @@
     <string name="empty_likes_action_button">Найти трек</string>
     <string name="empty_likes_description">Здесь появятся треки, которые вам понравились</string>
     <string name="empty_likes_import_button">Импортировать музыку</string>
-    <string name="empty_likes_search_results_description">Проверьте написание или попробуйте другой запрос.</string>
+    <string name="empty_likes_search_results_description"> </string>
     <string name="empty_likes_search_results_title">Ничего не найдено</string>
     <string name="empty_likes_tagline">Понравившихся треков пока нет</string>
     <string name="empty_list_message">Начните вводить, чтобы найти артистов и фанатов на SoundCloud</string>
@@ -849,7 +849,7 @@
     <string name="failure_no_media_picker">Не найдено приложение для выбора медиафайлов.</string>
     <string name="failure_opening_audio_picker">Произошла ошибка при открытии выбора файлов.</string>
     <string name="failure_opening_media_picker">Произошла ошибка при открытии выбора медиафайлов.</string>
-    <string name="fallback_menu_item_copy_link">Копировать ссылку</string>
+    <string name="fallback_menu_item_copy_link">Ссылка</string>
     <string name="fallback_menu_item_open_in_browser">Открыть в браузере</string>
     <string name="fallback_menu_item_share_link">Поделиться ссылкой</string>
     <string name="fan_support_customization_enable_subtitle">Позвольте фанатам финансировать вашу работу.</string>
@@ -875,11 +875,11 @@
     <string name="featured_fans_opt_out_fan_subheading">Вы появитесь в публичных списках первых и топ-фанатов</string>
     <string name="feed_add_to_playlist_action_text">Добавить</string>
     <string name="feed_content_loading_error">Произошла ошибка, потяните вниз, чтобы повторить.</string>
-    <string name="feed_discover">Обзор</string>
+    <string name="feed_discover">Рекомендации</string>
     <string name="feed_empty_content_description">Сначала подпишитесь на нескольких артистов. Потяните вниз, чтобы повторить.</string>
     <string name="feed_empty_content_tag_line">Нет контента</string>
     <string name="feed_following">Подписки</string>
-    <string name="feed_inactive_state_text">Нажмите для предпросмотра</string>
+    <string name="feed_inactive_state_text">Включить звук</string>
     <string name="feed_play_action_text">Воспроизвести</string>
     <string name="feedback_action_chooser">Отправить отзыв по электронной почте…</string>
     <string name="feedback_email_describe_problem">Опишите проблему:</string>
@@ -919,7 +919,7 @@
     <string name="following_feed_reposted_a_playlist">сделал(а) репост плейлиста</string>
     <string name="following_feed_reposted_a_track">сделал(а) репост трека</string>
     <string name="following_feed_reposted_an_album">сделал(а) репост альбома</string>
-    <string name="following_label">Подписки: %s</string>
+    <string name="following_label">%s подписок</string>
     <string name="followings">Подписки</string>
     <string name="form_field_error_artist">Введите корректное имя артиста</string>
     <string name="form_field_error_permalink_invalid">Используйте только строчные буквы, цифры, дефисы или символы подчёркивания. Должна быть хотя бы одна буква.</string>
@@ -1093,7 +1093,7 @@
     <string name="latest_upload_spotlight">Spotlight</string>
     <string name="library_preview_collection">Коллекция</string>
     <string name="library_preview_collection_new_label">НОВОЕ</string>
-    <string name="library_preview_uploads">Ваши загрузки</string>
+    <string name="library_preview_uploads">Ваши треки</string>
     <string name="library_uploader_header_action">Загрузить трек</string>
     <string name="library_uploader_header_subtitle">Загружайте прямо с телефона.</string>
     <string name="library_uploader_header_title">Чем хотите поделиться?</string>
@@ -1110,7 +1110,7 @@
     <string name="liked_library">Сохранено в вашей Библиотеке</string>
     <string name="liked_playlist">Понравилось</string>
     <string name="liked_share_track">Поделиться треком</string>
-    <string name="liked_tracks">Понравившиеся треки</string>
+    <string name="liked_tracks">Лайки</string>
     <string name="liked_tracks_sort_option_artist">Артист</string>
     <string name="liked_tracks_sort_option_first_added">Сначала старые</string>
     <string name="liked_tracks_sort_option_recently_added">Недавно добавленные</string>
@@ -1175,7 +1175,7 @@
     <string name="menu_edit_repost">Изменить репост</string>
     <string name="menu_edit_track">Изменить трек</string>
     <string name="menu_go_to_album">К альбому</string>
-    <string name="menu_go_to_artist">К странице артиста</string>
+    <string name="menu_go_to_artist">Профиль автора</string>
     <string name="menu_like">Нравится</string>
     <string name="menu_open_comments">Посмотреть комментарии</string>
     <string name="menu_open_info_track_page">Информация о треке</string>
@@ -1198,7 +1198,7 @@
     <string name="menu_unpost">Репостнуто на SoundCloud</string>
     <string name="menu_unpost_playlist">Отменить репост</string>
     <string name="menu_upload">Загрузить</string>
-    <string name="message">Сообщение</string>
+    <string name="message">Написать</string>
     <string name="message_input_hint">Введите сообщение</string>
     <string name="metadata_album_text">Альбом</string>
     <string name="metadata_artist_station_text">Станция артиста</string>
@@ -1394,9 +1394,9 @@
     <string name="nudge_fan_support_text">Поддержите этого артиста напрямую</string>
     <string name="nudge_follow_artist_text">Подпишитесь на %1$s, чтобы видеть больше</string>
     <string name="nudge_share_track_text">Поделитесь с друзьями</string>
-    <string name="number_suffix_b">млрд</string>
-    <string name="number_suffix_k">тыс.</string>
-    <string name="number_suffix_m">млн</string>
+    <string name="number_suffix_b">В</string>
+    <string name="number_suffix_k">К</string>
+    <string name="number_suffix_m">М</string>
     <string name="offline_backup_entry_description">Слушайте офлайн. Музыка продолжит играть, даже если пропадёт связь.</string>
     <string name="offline_backup_section_title">Нет сигнала — музыка играет</string>
     <string name="offline_backup_see_all">Показать все</string>
@@ -1416,7 +1416,7 @@
     <string name="offline_downloads_filter_all">Все</string>
     <string name="offline_downloads_filter_playlists">Плейлисты</string>
     <string name="offline_downloads_filter_tracks">Треки</string>
-    <string name="offline_downloads_liked_tracks">Понравившиеся треки</string>
+    <string name="offline_downloads_liked_tracks">Лайки</string>
     <string name="offline_downloads_section_title">Из ваших загрузок</string>
     <string name="offline_error_message">Чтобы сохранить изменения, проверьте подключение к интернету и повторите попытку.</string>
     <string name="offline_error_title">Вы не в сети</string>
@@ -1691,7 +1691,7 @@
     <string name="plan_transition_onboarding_welcome_subtitle">Посмотрите, что вы открыли!</string>
     <string name="plan_transition_onboarding_welcome_to_go">Добро пожаловать в Go</string>
     <string name="plan_transition_onboarding_welcome_to_go_plus">Добро пожаловать в Go+</string>
-    <string name="plan_transition_onboarding_your_likes">Понравившиеся треки</string>
+    <string name="plan_transition_onboarding_your_likes">Лайки</string>
     <string name="plan_transition_onboarding_your_playlists">Ваши плейлисты</string>
     <string name="plan_transition_restart_confirmation">Скоро приложение перезапустится, чтобы подтвердить смену тарифа.</string>
     <string name="play">Воспроизвести</string>
@@ -1735,12 +1735,12 @@
     <string name="playlist_description_title">Описание</string>
     <string name="playlist_edit_details_tab_title">Подробности</string>
     <string name="playlist_import_banner_button_label">Перенести сейчас</string>
-    <string name="playlist_import_banner_description_x_steps">Перенесите музыку из Spotify, Apple Music и других сервисов. Шагов: %d.</string>
+    <string name="playlist_import_banner_description_x_steps">Шагов: %d.</string>
     <string name="playlist_import_banner_dismissed_prompt">Функцию «Перенос библиотеки» можно найти в Настройках</string>
-    <string name="playlist_import_banner_mini_button_label">Перенести музыку</string>
+    <string name="playlist_import_banner_mini_button_label">Перенести</string>
     <string name="playlist_import_banner_mini_button_label_check_progress">Посмотреть ход</string>
     <string name="playlist_import_banner_mini_description">Легко переносите музыку из Spotify, Apple Music и других сервисов.</string>
-    <string name="playlist_import_banner_mini_title">💎 Перенесите любимую музыку</string>
+    <string name="playlist_import_banner_mini_title">Перенесите любимую музыку</string>
     <string name="playlist_import_banner_title">Перенесите свою любимую музыку</string>
     <string name="playlist_import_create_header_import">Импорт списка</string>
     <string name="playlist_import_create_header_new_playlist">Создать новый</string>
@@ -1866,7 +1866,7 @@
     <string name="profile_links">Ссылки</string>
     <string name="profile_protection_banner_description">Если что-то вызывает у вас неприятные ощущения, вы можете заблокировать этого пользователя или пожаловаться на него</string>
     <string name="profile_protection_banner_title">Безопасность на SoundCloud</string>
-    <string name="profile_report_abuse">Пожаловаться на нарушение</string>
+    <string name="profile_report_abuse">Пожаловаться</string>
     <string name="profile_support_artist_activate_now">Активировать сейчас</string>
     <string name="profile_support_artist_first_supporter">у вас появился первый сторонник</string>
     <string name="profile_support_artist_header">Поддержка фанатов</string>
@@ -2040,7 +2040,7 @@
     <string name="search_in">Поиск в %1$s</string>
     <string name="search_menu_title">Поиск</string>
     <string name="search_playlist_bar_hint">Поиск плейлистов</string>
-    <string name="search_suggestions_empty">Нет подсказок для текущего запроса</string>
+    <string name="search_suggestions_empty">Нет результатов</string>
     <string name="search_top_results_album">Альбом - %s</string>
     <string name="search_top_results_artist_station">Станция артиста</string>
     <string name="search_top_results_featuring">При участии</string>
@@ -2087,14 +2087,14 @@
     <string name="settings_enable_all">Включить все</string>
     <string name="settings_manage_subscription_apple_message">Управляйте подпиской в приложении Настройки на вашем устройстве Apple.</string>
     <string name="settings_notifications">Уведомления</string>
-    <string name="settings_offline_listening">Скачано</string>
+    <string name="settings_offline_listening">Оффлайн треки</string>
     <string name="settings_privacy">Конфиденциальность</string>
     <string name="settings_push_notifications_enable_all_summary">Включите все уведомления на мобильном устройстве или выберите, какие получать.</string>
     <string name="settings_sign_out">Выйти</string>
     <string name="settings_streaming_quality">Качество потоковой передачи</string>
-    <string name="settings_transfer_your_library_title">Импорт моей музыки</string>
+    <string name="settings_transfer_your_library_title">Импорт</string>
     <string name="settings_troubleshooting">Устранение неполадок</string>
-    <string name="settings_upload">Загрузка</string>
+    <string name="settings_upload">Загрузить трек</string>
     <string name="settings_widgets">Добавить виджеты</string>
     <string name="share">Поделиться</string>
     <string name="share_album_artist_link">Слушайте %1$s, альбом %2$s, на #SoundCloud %3$s</string>
@@ -2243,8 +2243,8 @@
     <string name="tab_downloads">Скачано</string>
     <string name="tab_feed">Лента</string>
     <string name="tab_go_plus">Улучшить</string>
-    <string name="tab_home">Обзор</string>
-    <string name="tab_library">Библиотека</string>
+    <string name="tab_home">Главная</string>
+    <string name="tab_library">Архив</string>
     <string name="tab_likes">Лайки</string>
     <string name="tab_playlists">Плейлисты</string>
     <string name="tab_plus_button">Создать</string>
@@ -2366,7 +2366,7 @@
     <string name="track_info_checklist_bottomsheet_not_completed_step">Не выполнено</string>
     <string name="track_info_checklist_bottomsheet_title">Всё по полочкам</string>
     <string name="track_info_checklist_x_out_of_y_steps_completed">Выполнено шагов: %1$d из %2$d</string>
-    <string name="track_likes_title">Понравившиеся треки</string>
+    <string name="track_likes_title">Лайки</string>
     <string name="track_page_badge_buzzing_description">Этот трек попал в плейлист «Горячее»</string>
     <string name="track_page_badge_buzzing_locked">Открывается, когда этот трек попадает в «Горячее»</string>
     <string name="track_page_badge_buzzing_name">Горячее</string>
@@ -2408,7 +2408,7 @@
     <string name="track_page_badge_talked_about_10_description">10 уникальных слушателей прокомментировали этот трек</string>
     <string name="track_page_badge_talked_about_10_locked">Откроется, когда трек прокомментируют 10 уникальных слушателей</string>
     <string name="track_page_badge_talked_about_10_name">Обсуждают: 10</string>
-    <string name="track_page_behind_track">О треке</string>
+    <string name="track_page_behind_track">Описание</string>
     <string name="track_page_exclusive_follower">ЭКСКЛЮЗИВ ДЛЯ ПОДПИСЧИКОВ</string>
     <string name="track_page_in_albums">В альбомах</string>
     <string name="track_page_in_playlists">В плейлистах</string>
@@ -2449,8 +2449,8 @@
     <string name="troubleshooting_session_logs_description">Отправьте последние журналы сеанса, чтобы мы могли подробно изучить, как вы пользуетесь приложением.</string>
     <string name="troubleshooting_session_logs_title">Журналы сеансов</string>
     <string name="troubleshooting_title">Устранение неполадок</string>
-    <string name="true_friends_cell_subtitle">Познакомьтесь со своими настоящими друзьями</string>
-    <string name="true_friends_cell_title">Те, кто подписался на вас в ответ</string>
+    <string name="true_friends_cell_subtitle"> </string>
+    <string name="true_friends_cell_title">Взаимные подписки</string>
     <string name="try_again">Повторить</string>
     <string name="turn_on_notifications">Включите уведомления сейчас и первыми узнавайте обо всех новых треках, плейлистах и эксклюзивных релизах!</string>
     <string name="unavailable">Недоступно</string>
@@ -2644,7 +2644,7 @@
     <string name="widget_community_section_title_trending">В тренде</string>
     <string name="widget_liked_tracks_description">Быстро включайте свои последние понравившиеся треки</string>
     <string name="widget_liked_tracks_error">Ошибка</string>
-    <string name="widget_liked_tracks_name">Понравившиеся треки</string>
+    <string name="widget_liked_tracks_name">Лайки</string>
     <string name="widget_liked_tracks_no_tracks_available">Нет понравившихся треков</string>
     <string name="widget_player_description">Управляйте тем, что играет на SoundCloud</string>
     <string name="widget_player_name">Плеер SoundCloud</string>
@@ -2654,7 +2654,7 @@
     <string name="yearly_playback_empty_state_title">К сожалению, у нас пока недостаточно данных за этот год.</string>
     <string name="you_are_now_following_user">Теперь вы подписаны на %s</string>
     <string name="your_insights">Ваша статистика</string>
-    <string name="your_uploads">Ваши загрузки</string>
+    <string name="your_uploads">Ваши треки</string>
     <string name="your_uploads_albums">Альбомы</string>
     <string name="your_uploads_filter_all">Все</string>
     <string name="your_uploads_filter_header">Фильтровать по</string>
@@ -2663,7 +2663,7 @@
     <string name="your_uploads_loading_failure">Не удалось загрузить</string>
     <string name="your_uploads_playlists">Плейлисты</string>
     <string name="your_uploads_private_title">Ваши приватные загрузки</string>
-    <string name="your_uploads_search_hind">Поиск в ваших загрузках</string>
+    <string name="your_uploads_search_hind">Поиск</string>
     <string name="your_uploads_search_result_empty_description">Проверьте написание или попробуйте другой запрос.</string>
     <string name="your_uploads_search_result_empty_title">Нет треков</string>
     <string name="your_uploads_sort_artist">Артист</string>
@@ -2695,7 +2695,7 @@
     <string name="artist_studio_private_empty_bullet_share">Делитесь приватной ссылкой с коллегами</string>
     <string name="artist_studio_private_empty_bullet_workspace">Личное пространство для незавершённых работ</string>
     <string name="artist_studio_private_empty_cta">Загрузить трек</string>
-    <string name="artist_studio_private_empty_title">Ваши загрузки</string>
+    <string name="artist_studio_private_empty_title">Ваши треки</string>
     <string name="artist_studio_quick_link_distribution">Распространение</string>
     <string name="artist_studio_quick_link_earnings">Доходы</string>
     <string name="artist_studio_quick_link_private_tracks">Приватные треки</string>

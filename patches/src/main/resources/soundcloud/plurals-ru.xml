@@ -247,10 +247,10 @@
         <item quantity="other">Artist Pro даёт %1$d кредита продвижения в месяц.</item>
     </plurals>
     <plurals name="library_search_likes_hint">
-        <item quantity="one">Поиск по %d треку</item>
-        <item quantity="few">Поиск по %d трекам</item>
-        <item quantity="many">Поиск по %d трекам</item>
-        <item quantity="other">Поиск по %d трека</item>
+        <item quantity="one">%d трек</item>
+        <item quantity="few">%d трека</item>
+        <item quantity="many">%d треков</item>
+        <item quantity="other">%d трека</item>
     </plurals>
     <plurals name="moving_x_likes_to_playlist">
         <item quantity="one">Перемещаем %d лайк в плейлист...</item>
@@ -359,29 +359,29 @@
         <item quantity="few">Осталось %1$d кредита</item>
         <item quantity="many">Осталось %1$d кредитов</item>
         <item quantity="other">Осталось %1$d кредита</item>
-</plurals>
-<plurals name="upload_success_amplify_credits_available_with_date">
+    </plurals>
+    <plurals name="upload_success_amplify_credits_available_with_date">
         <item quantity="one">Остался %1$d кредит · Обновление %2$s</item>
-<item quantity="few">Осталось %1$d кредита · Обновление %2$s</item>
-<item quantity="many">Осталось %1$d кредитов · Обновление %2$s</item>
-<item quantity="other">Осталось %1$d кредита · Обновление %2$s</item>
-</plurals>
-<plurals name="x_liked_tracks">
-<item quantity="one">%d понравившийся трек</item>
-<item quantity="few">%d понравившихся трека</item>
-<item quantity="many">%d понравившихся треков</item>
-<item quantity="other">%d понравившихся трека</item>
-</plurals>
-<plurals name="x_likes_to_revert">
-<item quantity="one">Можно отменить %d лайк</item>
-<item quantity="few">Можно отменить %d лайка</item>
-<item quantity="many">Можно отменить %d лайков</item>
-<item quantity="other">Можно отменить %d лайка</item>
-</plurals>
-<plurals name="x_playlists_transferred">
-<item quantity="one">Перенесён %d плейлист</item>
-<item quantity="few">Перенесено %d плейлиста</item>
-<item quantity="many">Перенесено %d плейлистов</item>
-<item quantity="other">Перенесено %d плейлиста</item>
-</plurals>
+        <item quantity="few">Осталось %1$d кредита · Обновление %2$s</item>
+        <item quantity="many">Осталось %1$d кредитов · Обновление %2$s</item>
+        <item quantity="other">Осталось %1$d кредита · Обновление %2$s</item>
+    </plurals>
+    <plurals name="x_liked_tracks">
+        <item quantity="one">%d понравившийся трек</item>
+        <item quantity="few">%d понравившихся трека</item>
+        <item quantity="many">%d понравившихся треков</item>
+        <item quantity="other">%d понравившихся трека</item>
+    </plurals>
+    <plurals name="x_likes_to_revert">
+        <item quantity="one">Можно отменить %d лайк</item>
+        <item quantity="few">Можно отменить %d лайка</item>
+        <item quantity="many">Можно отменить %d лайков</item>
+        <item quantity="other">Можно отменить %d лайка</item>
+    </plurals>
+    <plurals name="x_playlists_transferred">
+        <item quantity="one">Перенесён %d плейлист</item>
+        <item quantity="few">Перенесено %d плейлиста</item>
+        <item quantity="many">Перенесено %d плейлистов</item>
+        <item quantity="other">Перенесено %d плейлиста</item>
+    </plurals>
 </resources>
