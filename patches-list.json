@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -275,8 +275,8 @@
       "options": []
     },
     {
-      "name": "Vietnamese language",
-      "description": "Adds Vietnamese UI resources and known server-provided interface labels, preserves content titles, and enables Tiếng Việt in app locale selection.",
+      "name": "Russian language",
+      "description": "Adds Russian UI resources and known server-provided interface labels, preserves content titles, and enables russian in app locale selection.",
       "default": true,
       "category": null,
       "compatiblePackages": [
