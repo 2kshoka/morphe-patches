@@ -361,7 +361,7 @@
         <item quantity="other">Осталось %1$d кредита</item>
 </plurals>
 <plurals name="upload_success_amplify_credits_available_with_date">
-<item quantity="one">Остался %1$d кредит · Обновление %2$s</item>
+        <item quantity="one">Остался %1$d кредит · Обновление %2$s</item>
 <item quantity="few">Осталось %1$d кредита · Обновление %2$s</item>
 <item quantity="many">Осталось %1$d кредитов · Обновление %2$s</item>
 <item quantity="other">Осталось %1$d кредита · Обновление %2$s</item>
