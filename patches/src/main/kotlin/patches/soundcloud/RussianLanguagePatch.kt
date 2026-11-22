@@ -61,18 +61,18 @@ val vietnameseLanguagePatch = resourcePatch(
         val stringsStream = object {}.javaClass.getResourceAsStream("/soundcloud/strings-ru.xml")
             ?: throw PatchException("Vietnamese strings resource not found in patch bundle (/soundcloud/strings-ru.xml)")
         val stringsXml = stringsStream.bufferedReader().use { it.readText() }
-        val stringsFile = get("res/values-vi/strings.xml", false)
+        val stringsFile = get("res/values-ru/strings.xml", false)
         stringsFile.parentFile.mkdirs()
         stringsFile.writeText(stringsXml)
-        filterToDefinedResources("res/values/strings.xml", "res/values-vi/strings.xml", "string")
+        filterToDefinedResources("res/values/strings.xml", "res/values-ru/strings.xml", "string")
 
         // 3. Write res/values-vi/plurals.xml
         val pluralsStream = object {}.javaClass.getResourceAsStream("/soundcloud/plurals-ru.xml")
             ?: throw PatchException("Vietnamese plurals resource not found in patch bundle (/soundcloud/plurals-ru.xml)")
         val pluralsXml = pluralsStream.bufferedReader().use { it.readText() }
-        val pluralsFile = get("res/values-vi/plurals.xml", false)
+        val pluralsFile = get("res/values-ru/plurals.xml", false)
         pluralsFile.parentFile.mkdirs()
         pluralsFile.writeText(pluralsXml)
-        filterToDefinedResources("res/values/plurals.xml", "res/values-vi/plurals.xml", "plurals")
+        filterToDefinedResources("res/values/plurals.xml", "res/values-ru/plurals.xml", "plurals")
     }
 }
