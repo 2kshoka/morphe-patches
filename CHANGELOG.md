@@ -1,3 +1,9 @@
+## [1.1.0](https://github.com/2kshoka/morphe-patches/compare/v1.0.0...v1.1.0) (2026-11-22)
+
+### ✨ New Features
+
+* add translations ([d4cd867](https://github.com/2kshoka/morphe-patches/commit/d4cd867296983fbd309a0353be5d65fd6b8b969c))
+
 ## 1.0.0 (2026-11-22)
 
 ### 🐛 Bug Fixes
