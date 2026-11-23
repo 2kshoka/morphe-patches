@@ -1,3 +1,9 @@
+## [1.3.0-sleeptimer.4](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.3...v1.3.0-sleeptimer.4) (2026-11-23)
+
+### 🐛 Bug Fixes
+
+* Refactor click handling logic in SleepTimerPatch ([92df29b](https://github.com/2kshoka/morphe-patches/commit/92df29bf26095244ce7b45c8d438c36adcc272f8))
+
 ## [1.3.0-sleeptimer.3](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.2...v1.3.0-sleeptimer.3) (2026-11-23)
 
 ### 🐛 Bug Fixes
