@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-23T23:17:28",
-  "description": "## [1.3.0-sleeptimer.4](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.3...v1.3.0-sleeptimer.4) (2026-11-23)\n\n### 🐛 Bug Fixes\n\n* Refactor click handling logic in SleepTimerPatch ([92df29b](https://github.com/2kshoka/morphe-patches/commit/92df29bf26095244ce7b45c8d438c36adcc272f8))",
-  "download_url": "https://github.com/2kshoka/morphe-patches/releases/download/v1.3.0-sleeptimer.4/patches-1.3.0-sleeptimer.4.mpp",
+  "created_at": "2026-11-23T23:21:12",
+  "description": "## [1.3.0-sleeptimer.5](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.4...v1.3.0-sleeptimer.5) (2026-11-23)\n\n### 🐛 Bug Fixes\n\n* Update Russian translations for various labels ([d79d91d](https://github.com/2kshoka/morphe-patches/commit/d79d91d38e3a5afea7f338d17d2b214e4f267f2e))",
+  "download_url": "https://github.com/2kshoka/morphe-patches/releases/download/v1.3.0-sleeptimer.5/patches-1.3.0-sleeptimer.5.mpp",
   "signature_download_url": "",
-  "version": "1.3.0-sleeptimer.4"
+  "version": "1.3.0-sleeptimer.5"
 }

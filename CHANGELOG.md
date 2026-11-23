@@ -1,3 +1,9 @@
+## [1.3.0-sleeptimer.5](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.4...v1.3.0-sleeptimer.5) (2026-11-23)
+
+### 🐛 Bug Fixes
+
+* Update Russian translations for various labels ([d79d91d](https://github.com/2kshoka/morphe-patches/commit/d79d91d38e3a5afea7f338d17d2b214e4f267f2e))
+
 ## [1.3.0-sleeptimer.4](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.3...v1.3.0-sleeptimer.4) (2026-11-23)
 
 ### 🐛 Bug Fixes
