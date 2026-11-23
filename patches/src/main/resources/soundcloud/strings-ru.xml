@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generated Vietnamese Translation for SoundCloud -->
 <resources>
+    <string name="morphe_sleep_timer">Таймер сна</string>
     <string name="abc_action_bar_home_description">На главную</string>
     <string name="abc_action_bar_up_description">Назад</string>
     <string name="abc_action_menu_overflow_description">Ещё</string>
