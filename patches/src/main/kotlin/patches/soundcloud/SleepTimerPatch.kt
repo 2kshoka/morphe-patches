@@ -203,35 +203,47 @@ val sleepTimerMenuPatch = bytecodePatch(
             .distinct()
 
         data class Candidate(val method: Method, val tested: Int)
-        val candidates = mutableListOf<Candidate>()
-        val nearMisses = mutableListOf<Candidate>()
-        classDefForEach { klass ->
-            for (method in klass.methods) {
-                val takesItem = method.parameterTypes.any { it.toString() == MENU_ITEM }
-                val objectLambda = method.parameterTypes.size == 1 && method.parameterTypes[0].toString() == OBJECT
-                if (!takesItem && !objectLambda) continue
-                val tested = testedSubclasses(method).size
-                if (tested >= 10) candidates += Candidate(method, tested)
-                else if (tested >= 5) nearMisses += Candidate(method, tested)
-            }
-        }
-        fun describe(items: List<Candidate>) =
-            items.joinToString { "${it.method.definingClass}->${it.method.name} (${it.tested})" }
-            classDefForEach { klass ->
+
+val candidates = mutableListOf<Candidate>()
+val nearMisses = mutableListOf<Candidate>()
+val debugMethods = mutableListOf<String>()
+
+classDefForEach { klass ->
     for (method in klass.methods) {
-        val params = method.parameterTypes.joinToString()
-        val tested = testedSubclasses(method)
-        if (tested.isNotEmpty()) {
-            println(
-                "SLEEP DEBUG: ${method.definingClass}->${method.name} " +
-                "params=[$params] tested=${tested.size} " +
-                "types=${tested.joinToString()}"
-            )
+        val takesItem = method.parameterTypes.any {
+            it.toString() == MENU_ITEM
+        }
+        val objectLambda = method.parameterTypes.size == 1 &&
+            method.parameterTypes[0].toString() == OBJECT
+
+        val testedTypes = testedSubclasses(method)
+        val tested = testedTypes.size
+
+        if (takesItem || objectLambda) {
+            if (tested >= 10) candidates += Candidate(method, tested)
+            else if (tested >= 5) nearMisses += Candidate(method, tested)
+        }
+
+        if (tested >= 3 && debugMethods.size < 40) {
+            debugMethods +=
+                "${method.definingClass}->${method.name} " +
+                "params=[${method.parameterTypes.joinToString()}] " +
+                "tested=$tested types=[${testedTypes.joinToString()}]"
         }
     }
-            }
-        if (candidates.isEmpty())
-            throw PatchException("SoundCloud menu click dispatcher not found; near misses: ${describe(nearMisses)}")
+}
+
+fun describe(items: List<Candidate>) =
+    items.joinToString { "${it.method.definingClass}->${it.method.name} (${it.tested})" }
+
+if (candidates.isEmpty()) {
+    throw PatchException(
+        "SoundCloud menu click dispatcher not found; " +
+        "near misses: ${describe(nearMisses)}\n" +
+        "SLEEP DEBUG:\n" +
+        debugMethods.joinToString("\n").ifBlank { "<none>" }
+    )
+}
         if (candidates.size > 1)
             throw PatchException("Ambiguous SoundCloud menu click dispatchers: ${describe(candidates)}")
 
