@@ -1,6 +1,6 @@
 # SoundCloud Combined Patches (Morphe)
 
-Combined SoundCloud (`com.soundcloud.android`) patches for use with [Morphe](https://morphe.software), featuring full Vietnamese localization, Android Auto Home, privacy/ad removal, AMOLED black-and-orange styling, optional Cast and Message icon removal, and client-side Go caching.
+Combined SoundCloud (`com.soundcloud.android`) patches for use with [Morphe](https://morphe.software), featuring full Russian localization, Android Auto Home, privacy/ad removal, AMOLED black-and-orange styling, optional Cast and Message icon removal, and client-side Go caching.
 
 ## Add Source to Morphe
 
