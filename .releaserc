@@ -1,7 +1,11 @@
 {
-  "branches": [
-    "main"
-  ],
+ "branches": [
+  "main",
+  {
+    "name": "Sleeptimer",
+    "prerelease": "sleeptimer"
+  }
+],
   "plugins": [
     [
       "@semantic-release/commit-analyzer",
