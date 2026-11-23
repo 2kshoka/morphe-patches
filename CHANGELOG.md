@@ -1,3 +1,9 @@
+## [1.3.0-sleeptimer.3](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.2...v1.3.0-sleeptimer.3) (2026-11-23)
+
+### 🐛 Bug Fixes
+
+* debug ([d9afa78](https://github.com/2kshoka/morphe-patches/commit/d9afa785eb28a052ce822fa0ef5cc558234e16e9))
+
 ## [1.3.0-sleeptimer.2](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.1...v1.3.0-sleeptimer.2) (2026-11-23)
 
 ### 🐛 Bug Fixes
