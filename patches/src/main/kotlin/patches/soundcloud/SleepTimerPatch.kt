@@ -236,18 +236,21 @@ val sleepTimerMenuPatch = bytecodePatch(
         // v1 = TrackMenuItem, v0 = TrackBottomSheetFragment.
         // :goto_12 dismisses the bottom sheet and returns Kotlin Unit.
         handler.addInstructionsWithLabels(
-            fragmentCastIndex + 1,
-            """
-                instance-of v7, v1, $SLEEP_ITEM
-                if-eqz v7, :morphe_not_sleep_timer
-                invoke-static {}, $ENTRY->open()V
-                goto :goto_12
-            """,
-            ExternalLabel(
-                "morphe_not_sleep_timer",
-                handler.getInstruction(fragmentCastIndex + 1)
-            ),
-        )
+    fragmentCastIndex + 1,
+    """
+        instance-of v7, v1, $SLEEP_ITEM
+        if-eqz v7, :morphe_not_sleep_timer
+        invoke-static {}, $ENTRY->open()V
+        invoke-virtual {v0}, Lcom/google/android/material/bottomsheet/BottomSheetDialogFragment;->dismissAllowingStateLoss()V
+        sget-object v6, Lkotlin/Unit;->a:Lkotlin/Unit;
+        return-object v6
+    """,
+    ExternalLabel(
+        "morphe_not_sleep_timer",
+        handler.getInstruction(fragmentCastIndex + 1)
+    ),
+)
+        
         
     }
 }
