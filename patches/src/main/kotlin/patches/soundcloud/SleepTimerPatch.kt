@@ -217,6 +217,19 @@ val sleepTimerMenuPatch = bytecodePatch(
         }
         fun describe(items: List<Candidate>) =
             items.joinToString { "${it.method.definingClass}->${it.method.name} (${it.tested})" }
+            classDefForEach { klass ->
+    for (method in klass.methods) {
+        val params = method.parameterTypes.joinToString()
+        val tested = testedSubclasses(method)
+        if (tested.isNotEmpty()) {
+            println(
+                "SLEEP DEBUG: ${method.definingClass}->${method.name} " +
+                "params=[$params] tested=${tested.size} " +
+                "types=${tested.joinToString()}"
+            )
+        }
+    }
+            }
         if (candidates.isEmpty())
             throw PatchException("SoundCloud menu click dispatcher not found; near misses: ${describe(nearMisses)}")
         if (candidates.size > 1)
