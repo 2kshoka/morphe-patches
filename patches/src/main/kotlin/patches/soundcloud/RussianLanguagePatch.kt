@@ -11,7 +11,7 @@ val vietnameseLanguagePatch = resourcePatch(
     default = true,
 ) {
     compatibleWith(soundcloud)
-    dependsOn(originalInput, vietnameseUiLabelsPatch)
+    dependsOn(originalInput, vietnameseUiLabelsPatch, sleepTimerResourcePatch)
 
     execute {
         // 1. Add <locale android:name="vi" /> to res/xml/locales_config.xml
