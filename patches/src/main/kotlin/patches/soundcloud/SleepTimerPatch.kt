@@ -10,9 +10,7 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.smali.ExternalLabel
-import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
-import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
@@ -190,100 +188,66 @@ val sleepTimerMenuPatch = bytecodePatch(
             """,
         )
 
-        // 3. Click handling. The click dispatcher (BottomSheetActionHandler) was not among the
-        //    provided smali, so it is found structurally: a method that takes the clicked item
-        //    as TrackMenuItem (or a single Object, for a lambda) and tests it with instance-of
-        //    against at least ten TrackMenuItem subclasses. Exactly one such method must exist;
-        //    otherwise patching stops with the candidates listed instead of guessing.
-        val subclassPrefix = MENU_ITEM.removeSuffix(";") + "$"
-        fun testedSubclasses(method: Method) = method.implementation?.instructions?.toList().orEmpty()
-            .filter { it.opcode == Opcode.INSTANCE_OF }
-            .mapNotNull { ((it as ReferenceInstruction).reference as? TypeReference)?.type }
-            .filter { it.startsWith(subclassPrefix) }
-            .distinct()
+        
+        // 3. Click handling.
+        // The clicked TrackMenuItem is stored in Lks/j;->b.
+        // Tag 4 dispatches to the TrackBottomSheetFragment menu handler.
 
-        data class Candidate(val method: Method, val tested: Int)
+        val clickClass = mutableClassDefBy("Lks/j;")
 
-val candidates = mutableListOf<Candidate>()
-val nearMisses = mutableListOf<Candidate>()
-val debugMethods = mutableListOf<String>()
-
-classDefForEach { klass ->
-    for (method in klass.methods) {
-        val takesItem = method.parameterTypes.any {
-            it.toString() == MENU_ITEM
-        }
-        val objectLambda = method.parameterTypes.size == 1 &&
-            method.parameterTypes[0].toString() == OBJECT
-
-        val testedTypes = testedSubclasses(method)
-        val tested = testedTypes.size
-
-        if (takesItem || objectLambda) {
-            if (tested >= 10) candidates += Candidate(method, tested)
-            else if (tested >= 5) nearMisses += Candidate(method, tested)
-        }
-
-        if (tested >= 3 && debugMethods.size < 40) {
-            debugMethods +=
-                "${method.definingClass}->${method.name} " +
-                "params=[${method.parameterTypes.joinToString()}] " +
-                "tested=$tested types=[${testedTypes.joinToString()}]"
-        }
-    }
-}
-
-fun describe(items: List<Candidate>) =
-    items.joinToString { "${it.method.definingClass}->${it.method.name} (${it.tested})" }
-
-if (candidates.isEmpty()) {
-    throw PatchException(
-        "SoundCloud menu click dispatcher not found; " +
-        "near misses: ${describe(nearMisses)}\n" +
-        "SLEEP DEBUG:\n" +
-        debugMethods.joinToString("\n").ifBlank { "<none>" }
-    )
-}
-        if (candidates.size > 1)
-            throw PatchException("Ambiguous SoundCloud menu click dispatchers: ${describe(candidates)}")
-
-        val dispatch = candidates.single().method
-        val handler = mutableClassDefBy(dispatch.definingClass).methods.single {
-            it.name == dispatch.name && it.parameterTypes == dispatch.parameterTypes && it.returnType == dispatch.returnType
-        }
-
-        // p-register of the clicked item: skip 'this', then every earlier parameter (wide = 2).
-        fun width(type: CharSequence) = if (type.toString() == "J" || type.toString() == "D") 2 else 1
-        val isStatic = AccessFlags.STATIC.isSet(handler.accessFlags)
-        val itemParam = handler.parameterTypes.indexOfFirst { it.toString() == MENU_ITEM }.let { if (it >= 0) it else 0 }
-        var itemP = if (isStatic) 0 else 1
-        for (i in 0 until itemParam) itemP += width(handler.parameterTypes[i])
-        val parameterRegisters = (if (isStatic) 0 else 1) + handler.parameterTypes.sumOf { width(it) }
-
-        // v0 is scratch at method entry, so a local must exist (a parameter must not be clobbered).
-        if (handler.implementation!!.registerCount - parameterRegisters < 1)
-            throw PatchException("SoundCloud menu click dispatcher has no free local register")
-
-        val returnSmali = when {
-            handler.returnType == "V" -> "return-void"
-            handler.returnType.startsWith("L") || handler.returnType.startsWith("[") ->
-                "const/4 v0, 0x0\nreturn-object v0"
-            else -> throw PatchException("SoundCloud menu click dispatcher returns ${handler.returnType}")
-        }
-
-        // move-object/from16 copes with a parameter register above v15; instance-of needs 4 bits.
-        // Same label pattern as the "Disable analytics" patch: the label points at the method's
-        // original first instruction, evaluated before the insertion.
-        handler.addInstructionsWithLabels(
-            0,
-            """
-                move-object/from16 v0, p$itemP
-                instance-of v0, v0, $SLEEP_ITEM
-                if-eqz v0, :morphe_not_sleep_timer
-                invoke-static {}, $ENTRY->open()V
-                $returnSmali
-            """,
-            ExternalLabel("morphe_not_sleep_timer", handler.getInstruction(0)),
+        val handler = clickClass.methods.singleOrNull {
+            it.name == "invoke" &&
+            it.parameterTypes.isEmpty() &&
+            it.returnType.toString() == OBJECT
+        } ?: throw PatchException(
+            "SoundCloud menu lambda Lks/j;->invoke()Ljava/lang/Object; not found"
         )
+
+        val instructions = handler.instructions.toList()
+
+        fun castType(index: Int): String? {
+            val instruction = instructions[index]
+            if (instruction.opcode != Opcode.CHECK_CAST) return null
+            return ((instruction as? ReferenceInstruction)?.reference as? TypeReference)?.type
+        }
+
+        // Find the TrackMenuItem cast in the tag-4 branch.
+        
+        val hapticType = "Landroidx/compose/ui/hapticfeedback/HapticFeedback;"
+        val fragmentType = "${ROOT}features/bottomsheet/track/TrackBottomSheetFragment;"
+
+        val menuCastIndex = instructions.indices.filter { i ->
+            castType(i) == MENU_ITEM &&
+            i + 4 < instructions.size &&
+            instructions[i + 1].opcode == Opcode.IGET_OBJECT &&
+            castType(i + 2) == hapticType &&
+            instructions[i + 3].opcode == Opcode.IGET_OBJECT &&
+            castType(i + 4) == fragmentType
+        }.singleOrNull() ?: throw PatchException(
+            "Track menu handler branch in Lks/j;->invoke() not found or ambiguous"
+        )
+
+        val fragmentCastIndex = menuCastIndex + 4
+        
+
+        if (fragmentCastIndex + 1 >= instructions.size)
+            throw PatchException("Unexpected end of Lks/j;->invoke()")
+
+        // v1 = TrackMenuItem, v0 = TrackBottomSheetFragment.
+        // :goto_12 dismisses the bottom sheet and returns Kotlin Unit.
+        handler.addInstructionsWithLabels(
+            fragmentCastIndex + 1,
+            """
+                instance-of v7, v1, $SLEEP_ITEM
+                if-eqz v7, :morphe_not_sleep_timer
+                invoke-static {}, $ENTRY->open()V
+                goto :goto_12
+            """,
+            ExternalLabel(
+                "morphe_not_sleep_timer",
+                handler.getInstruction(fragmentCastIndex + 1)
+            ),
+        )
+        
     }
 }
