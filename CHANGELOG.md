@@ -1,3 +1,9 @@
+## [1.3.0-sleeptimer.6](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.5...v1.3.0-sleeptimer.6) (2026-11-23)
+
+### 🐛 Bug Fixes
+
+* Enhance SleepTimerPatch with dialog dismissal ([92364e2](https://github.com/2kshoka/morphe-patches/commit/92364e2cee13f62a22ce40ee7b22f54b5219a37a))
+
 ## [1.3.0-sleeptimer.5](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.4...v1.3.0-sleeptimer.5) (2026-11-23)
 
 ### 🐛 Bug Fixes
