@@ -47,7 +47,7 @@ public final class SleepTimerEntry {
         // The click may arrive on any thread; dialogs must be created on the UI thread.
         activity.runOnUiThread(() -> {
             try {
-                SleepTimer.showDialog(activity);
+                SleepTimerDialog.show(activity);
             } catch (RuntimeException e) {
                 Log.e(TAG, "Failed to show sleep timer dialog", e);
             }
