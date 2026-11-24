@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 
@@ -18,13 +17,21 @@ public final class SleepTimerEntry {
     private static volatile Application application;
     private static boolean callbacksRegistered;
 
-    private static void toast(String message) {
-        Application app = application;
-        if (app != null) {
-            Toast.makeText(app, message, Toast.LENGTH_SHORT).show();
-        }
+    /**
+     * Called from Application.onCreate(), i.e. at the start of EVERY process, whichever component
+     * started it (launcher, task restore after the process was killed, notification, media
+     * service, Android Auto, ...). From here on the tracker below sees every Activity that is
+     * created, so open() always finds the foreground Activity.
+     */
+    public static void attachApplication(Application app) {
+        if (app == null) return;
+        application = app;
+        SleepTimerIds.init(app);
+        registerTracker(app);
+        Log.i(TAG, "attached to the Application");
     }
 
+    /** Kept as a second, harmless entry point; everything it does is idempotent. */
     public static void attach(Activity activity) {
         if (activity == null) return;
 
@@ -34,24 +41,23 @@ public final class SleepTimerEntry {
         application = app;
 
         SleepTimerIds.init(app);
+        registerTracker(app);
+    }
 
+    private static void registerTracker(Application app) {
         synchronized (SleepTimerEntry.class) {
             if (!callbacksRegistered && app != null) {
                 app.registerActivityLifecycleCallbacks(new Tracker());
                 callbacksRegistered = true;
             }
         }
-
-        toast("SleepTimer: ATTACH " + activity.getClass().getSimpleName());
     }
 
     public static void open() {
-        toast("SleepTimer: OPEN called");
-
         Activity activity = current.get();
 
         if (activity == null) {
-            toast("SleepTimer: Activity is NULL");
+            Log.w(TAG, "No Activity to show the sleep timer window");
             return;
         }
 
@@ -61,17 +67,14 @@ public final class SleepTimerEntry {
             if (latest == null ||
                     latest.isFinishing() ||
                     latest.isDestroyed()) {
-                toast("SleepTimer: No valid Activity");
+                Log.w(TAG, "No valid Activity to show the sleep timer window");
                 return;
             }
 
             try {
                 SleepTimerDialog.show(latest);
-                toast("SleepTimer: Dialog opened");
             } catch (RuntimeException e) {
                 Log.e(TAG, "Failed to show dialog", e);
-                toast("SleepTimer error: " +
-                        e.getClass().getSimpleName());
             }
         });
     }
