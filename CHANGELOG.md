@@ -1,3 +1,9 @@
+## [1.3.0-sleeptimer.9](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.8...v1.3.0-sleeptimer.9) (2026-11-24)
+
+### 🐛 Bug Fixes
+
+* Update Russian text for clarity in SleepTimerDialog ([17683e8](https://github.com/2kshoka/morphe-patches/commit/17683e8f6003ba5bb0dacffe88ec24b53325b3bd))
+
 ## [1.3.0-sleeptimer.8](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.7...v1.3.0-sleeptimer.8) (2026-11-24)
 
 ### ✨ New Features
