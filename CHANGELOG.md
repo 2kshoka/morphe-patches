@@ -1,3 +1,9 @@
+## [1.3.0-sleeptimer.11](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.10...v1.3.0-sleeptimer.11) (2026-11-24)
+
+### 🐛 Bug Fixes
+
+* Refactor SleepTimerEntry for better activity handling ([48a9a95](https://github.com/2kshoka/morphe-patches/commit/48a9a95d6a41421e03d42c8e27743c2daf6c5899))
+
 ## [1.3.0-sleeptimer.10](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.9...v1.3.0-sleeptimer.10) (2026-11-24)
 
 ### 🐛 Bug Fixes
