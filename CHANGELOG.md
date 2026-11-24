@@ -1,3 +1,9 @@
+## [1.3.0-sleeptimer.8](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.7...v1.3.0-sleeptimer.8) (2026-11-24)
+
+### ✨ New Features
+
+* Replace SleepTimer with SleepTimerDialog in UI thread ([558acb7](https://github.com/2kshoka/morphe-patches/commit/558acb7fed7f0317c8587492289c718fa379b3b4))
+
 ## [1.3.0-sleeptimer.7](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.6...v1.3.0-sleeptimer.7) (2026-11-24)
 
 ### ✨ New Features
