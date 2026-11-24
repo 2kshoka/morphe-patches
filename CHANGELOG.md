@@ -1,3 +1,10 @@
+## [1.3.0-sleeptimer.7](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.6...v1.3.0-sleeptimer.7) (2026-11-24)
+
+### ✨ New Features
+
+* upd sleeptimer ([9bf5553](https://github.com/2kshoka/morphe-patches/commit/9bf55536f02c5547a2d535c1567d78265fafecdf))
+* update sleeptimer ([5a0ae05](https://github.com/2kshoka/morphe-patches/commit/5a0ae050b18ed25dfa47aaf7a151561231e2481d))
+
 ## [1.3.0-sleeptimer.6](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.5...v1.3.0-sleeptimer.6) (2026-11-23)
 
 ### 🐛 Bug Fixes
