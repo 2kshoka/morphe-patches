@@ -1,3 +1,10 @@
+## [1.3.0-sleeptimer.10](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.9...v1.3.0-sleeptimer.10) (2026-11-24)
+
+### 🐛 Bug Fixes
+
+* Enhance open method with user feedback via Toast ([8278b34](https://github.com/2kshoka/morphe-patches/commit/8278b3435bbe1a437e0b08aed91c4f12107476a3))
+* Remove Toast message when activity is null ([573a3e7](https://github.com/2kshoka/morphe-patches/commit/573a3e79115d417b93188df626643762fbe8a278))
+
 ## [1.3.0-sleeptimer.9](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.8...v1.3.0-sleeptimer.9) (2026-11-24)
 
 ### 🐛 Bug Fixes
