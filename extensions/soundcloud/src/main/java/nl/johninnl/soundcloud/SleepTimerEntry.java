@@ -55,15 +55,31 @@ public final class SleepTimerEntry {
     }
 
     private static final class Tracker implements Application.ActivityLifecycleCallbacks {
-        @Override public void onActivityCreated(Activity activity, Bundle state) { current = new WeakReference<>(activity); }
-        @Override public void onActivityStarted(Activity activity) { }
-        @Override public void onActivityResumed(Activity activity) { current = new WeakReference<>(activity); }
-        @Override public void onActivityPaused(Activity activity) { }
-        @Override public void onActivityStopped(Activity activity) { }
-        @Override public void onActivitySaveInstanceState(Activity activity, Bundle outState) { }
-        @Override public void onActivityDestroyed(Activity activity) {
-            if (current.get() == activity) current = new WeakReference<>(null);
+    @Override
+    public void onActivityCreated(Activity activity, Bundle state) {
+        current = new WeakReference<>(activity);
+    }
+
+    @Override public void onActivityStarted(Activity activity) {
+        current = new WeakReference<>(activity);
+    }
+
+    @Override public void onActivityResumed(Activity activity) {
+        current = new WeakReference<>(activity);
+    }
+
+    @Override public void onActivityPaused(Activity activity) {}
+
+    @Override public void onActivityStopped(Activity activity) {}
+
+    @Override public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
+
+    @Override
+    public void onActivityDestroyed(Activity activity) {
+        if (current.get() == activity) {
+            current = new WeakReference<>(null);
         }
+    }
     }
 
     private SleepTimerEntry() {}
