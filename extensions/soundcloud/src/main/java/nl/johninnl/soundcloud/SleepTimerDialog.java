@@ -141,7 +141,7 @@ final class SleepTimerDialog {
         dialParams.topMargin = dp(10);
         root.addView(dial, dialParams);
 
-        TextView hint = text("Крутите круг. Удерживайте палец, чтобы сохранить время в избранное.",
+        TextView hint = text(" ",
             12, subTextColor, false);
         hint.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams hintParams = new LinearLayout.LayoutParams(
@@ -149,7 +149,7 @@ final class SleepTimerDialog {
         hintParams.topMargin = dp(6);
         root.addView(hint, hintParams);
 
-        TextView favTitle = text("Избранное", 13, subTextColor, true);
+        TextView favTitle = text("Сохранённое", 13, subTextColor, true);
         LinearLayout.LayoutParams favTitleParams = new LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         favTitleParams.topMargin = dp(12);
@@ -171,7 +171,7 @@ final class SleepTimerDialog {
         buttons.setGravity(Gravity.END);
         TextView cancel = button("Отмена", false);
         cancel.setOnClickListener(v -> dialog.dismiss());
-        primary = button("Запустить таймер", true);
+        primary = button("Запуск", true);
         primary.setOnClickListener(v -> onPrimary());
         LinearLayout.LayoutParams cancelParams = new LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -264,10 +264,10 @@ final class SleepTimerDialog {
         if (SleepTimerMath.addFavorite(favorites, minutes)) {
             persist();
             rebuildChips();
-            Toast.makeText(app, "В избранном: " + SleepTimerMath.formatMinutes(minutes), Toast.LENGTH_SHORT).show();
+            Toast.makeText(app, "Сохранено: " + SleepTimerMath.formatMinutes(minutes), Toast.LENGTH_SHORT).show();
         } else {
             if (Build.VERSION.SDK_INT >= 30) dial.performHapticFeedback(HapticFeedbackConstants.REJECT);
-            Toast.makeText(app, "Уже в избранном", Toast.LENGTH_SHORT).show();
+            Toast.makeText(app, "Уже сохранено", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -275,7 +275,7 @@ final class SleepTimerDialog {
         if (SleepTimerMath.removeFavorite(favorites, minutes)) {
             persist();
             rebuildChips();
-            Toast.makeText(app, "Удалено из избранного: " + SleepTimerMath.formatMinutes(minutes),
+            Toast.makeText(app, SleepTimerMath.formatMinutes(minutes) + "удалено из сохраненных",
                 Toast.LENGTH_SHORT).show();
         }
     }
@@ -287,7 +287,7 @@ final class SleepTimerDialog {
     private void rebuildChips() {
         chipRow.removeAllViews();
         if (favorites.isEmpty()) {
-            chipRow.addView(text("Пока пусто", 13, subTextColor, false));
+            chipRow.addView(text("Ещё нет", 13, subTextColor, false));
             return;
         }
         for (final int minutes : new ArrayList<>(favorites)) {
