@@ -38,7 +38,7 @@ public final class  RussianLabels {
             {"Suggested for you", "Предложения для вас"}, {"Picked for you", "Выбрано для вас"},
             {"Hot for you", "В тренде для вас"}, {"Hot For You", "В тренде для вас"},
             {"Recently played", "Недавно воспроизведённые"}, {"Your listening history", "История прослушивания"},
-            {"Your likes", "Лайки"}, {"Your playlists", "Ваши плейлисты"},
+            {"Your likes", "Ваши лайки"}, {"Your playlists", "Ваши плейлисты"},
             {"Your stations", "Ваши станции"}, {"Your uploads", "Ваши загрузки"},
             {"Your albums", "Ваши альбомы"}, {"Your library", "Ваша библиотека"},
             {"Your Collection", "Ваша коллекция"}, {"Collection", "Коллекция"},
