@@ -171,7 +171,7 @@ final class SleepTimerDialog {
         buttons.setGravity(Gravity.END);
         TextView cancel = button("Отмена", false);
         cancel.setOnClickListener(v -> dialog.dismiss());
-        primary = button("Запуск", true);
+        primary = button("Запустить таймер", true);
         primary.setOnClickListener(v -> onPrimary());
         LinearLayout.LayoutParams cancelParams = new LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
