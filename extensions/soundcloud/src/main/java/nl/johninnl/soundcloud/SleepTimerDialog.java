@@ -275,7 +275,7 @@ final class SleepTimerDialog {
         if (SleepTimerMath.removeFavorite(favorites, minutes)) {
             persist();
             rebuildChips();
-            Toast.makeText(app, SleepTimerMath.formatMinutes(minutes) + "удалено из сохраненных",
+            Toast.makeText(app, "Удалено из сохраненных: " + SleepTimerMath.formatMinutes(minutes),
                 Toast.LENGTH_SHORT).show();
         }
     }
