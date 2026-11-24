@@ -69,6 +69,24 @@ public final class SleepTimer {
         am.dispatchMediaKeyEvent(new KeyEvent(now, now, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PAUSE, 0));
         am.dispatchMediaKeyEvent(new KeyEvent(now, now, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_PAUSE, 0));
     }
+    public static boolean isRunning() {
+    return pending != null;
+}
+
+public static long remainingMillis() {
+    if (pending == null) return 0;
+    return Math.max(0, endAtUptime - SystemClock.uptimeMillis());
+}
+
+public static void start(Context context, int minutes) {
+    if (context == null || minutes <= 0) return;
+    set(context.getApplicationContext(), minutes);
+}
+
+public static void stop(Context context) {
+    if (context == null) return;
+    set(context.getApplicationContext(), 0);
+}
 
     private SleepTimer() {}
 }
