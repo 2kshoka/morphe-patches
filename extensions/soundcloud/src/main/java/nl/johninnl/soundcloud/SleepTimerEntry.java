@@ -43,7 +43,6 @@ public final class SleepTimerEntry {
     Activity activity = current.get();
 
     if (activity == null) {
-        Toast.makeText(SleepTimerIds.getContext(), "SleepTimer: Activity is NULL", Toast.LENGTH_SHORT).show();
         return;
     }
 
