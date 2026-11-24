@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 
@@ -39,19 +40,28 @@ public final class SleepTimerEntry {
     }
 
     public static void open() {
-        final Activity activity = current.get();
-        if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
-            Log.w(TAG, "No live Activity to show the sleep timer dialog");
+    Activity activity = current.get();
+
+    if (activity == null) {
+        Toast.makeText(SleepTimerIds.getContext(), "SleepTimer: Activity is NULL", Toast.LENGTH_SHORT).show();
+        return;
+    }
+
+    activity.runOnUiThread(() -> {
+        Activity latest = current.get();
+
+        if (latest == null || latest.isFinishing() || latest.isDestroyed()) {
+            Toast.makeText(activity, "SleepTimer: No valid Activity", Toast.LENGTH_SHORT).show();
             return;
         }
-        // The click may arrive on any thread; dialogs must be created on the UI thread.
-        activity.runOnUiThread(() -> {
-            try {
-                SleepTimerDialog.show(activity);
-            } catch (RuntimeException e) {
-                Log.e(TAG, "Failed to show sleep timer dialog", e);
-            }
-        });
+
+        try {
+            SleepTimerDialog.show(latest);
+            Toast.makeText(latest, "SleepTimer: Dialog opened", Toast.LENGTH_SHORT).show();
+        } catch (RuntimeException e) {
+            Toast.makeText(latest, "SleepTimer error: " + e.getClass().getSimpleName(), Toast.LENGTH_LONG).show();
+        }
+    });
     }
 
     private static final class Tracker implements Application.ActivityLifecycleCallbacks {
