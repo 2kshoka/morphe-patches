@@ -1,3 +1,9 @@
+## [1.4.1](https://github.com/2kshoka/morphe-patches/compare/v1.4.0...v1.4.1) (2026-11-25)
+
+### 🐛 Bug Fixes
+
+* Correct spelling of 'Russian' in build.gradle.kts ([cf46312](https://github.com/2kshoka/morphe-patches/commit/cf46312836ce5bb1f9c501f8910dec641c87bfd9))
+
 ## [1.4.0](https://github.com/2kshoka/morphe-patches/compare/v1.3.0...v1.4.0) (2026-11-25)
 
 ### ✨ New Features
