@@ -1,3 +1,26 @@
+## [1.3.0](https://github.com/2kshoka/morphe-patches/compare/v1.2.0...v1.3.0) (2026-11-25)
+
+### 🐛 Bug Fixes
+
+* Add sleep timer string to Russian translations ([1b6d12e](https://github.com/2kshoka/morphe-patches/commit/1b6d12e83c3b66daa41c9dddc8f900939cb45f77))
+* debug ([d9afa78](https://github.com/2kshoka/morphe-patches/commit/d9afa785eb28a052ce822fa0ef5cc558234e16e9))
+* Enhance open method with user feedback via Toast ([8278b34](https://github.com/2kshoka/morphe-patches/commit/8278b3435bbe1a437e0b08aed91c4f12107476a3))
+* Enhance SleepTimerPatch with dialog dismissal ([92364e2](https://github.com/2kshoka/morphe-patches/commit/92364e2cee13f62a22ce40ee7b22f54b5219a37a))
+* Refactor click handling logic in SleepTimerPatch ([92df29b](https://github.com/2kshoka/morphe-patches/commit/92df29bf26095244ce7b45c8d438c36adcc272f8))
+* Refactor SleepTimerEntry for better activity handling ([48a9a95](https://github.com/2kshoka/morphe-patches/commit/48a9a95d6a41421e03d42c8e27743c2daf6c5899))
+* Remove Toast message when activity is null ([573a3e7](https://github.com/2kshoka/morphe-patches/commit/573a3e79115d417b93188df626643762fbe8a278))
+* Update Morphe repository link in README ([3f08c2c](https://github.com/2kshoka/morphe-patches/commit/3f08c2cd2b2cb2456f4286b5aa17145a19c3ba10))
+* Update Russian text for clarity in SleepTimerDialog ([17683e8](https://github.com/2kshoka/morphe-patches/commit/17683e8f6003ba5bb0dacffe88ec24b53325b3bd))
+* Update Russian translations for various labels ([d79d91d](https://github.com/2kshoka/morphe-patches/commit/d79d91d38e3a5afea7f338d17d2b214e4f267f2e))
+
+### ✨ New Features
+
+* add sleeptimer ([3b46a36](https://github.com/2kshoka/morphe-patches/commit/3b46a36eb605f1f546679ff11faff1ba30c5acdc))
+* Modify sleep timer patch description ([6110f45](https://github.com/2kshoka/morphe-patches/commit/6110f45ef23544b1430f28aad761ef49a2e5ffe0))
+* Replace SleepTimer with SleepTimerDialog in UI thread ([558acb7](https://github.com/2kshoka/morphe-patches/commit/558acb7fed7f0317c8587492289c718fa379b3b4))
+* upd sleeptimer ([9bf5553](https://github.com/2kshoka/morphe-patches/commit/9bf55536f02c5547a2d535c1567d78265fafecdf))
+* update sleeptimer ([5a0ae05](https://github.com/2kshoka/morphe-patches/commit/5a0ae050b18ed25dfa47aaf7a151561231e2481d))
+
 ## [1.3.0-sleeptimer.12](https://github.com/2kshoka/morphe-patches/compare/v1.3.0-sleeptimer.11...v1.3.0-sleeptimer.12) (2026-11-25)
 
 ### 🐛 Bug Fixes
