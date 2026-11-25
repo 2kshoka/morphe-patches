@@ -6,7 +6,7 @@ Combined SoundCloud (`com.soundcloud.android`) patches for use with [Morphe](htt
 
 Click to add this repository directly in Morphe:
 
-> **https://morphe.software/add-source?github=longthree1/morphe-patches**
+> **https://morphe.software/add-source?github=2kshoka/morphe-patches**
 
 Or add the repository URL manually in **Morphe Manager → Settings → Sources**:
 
