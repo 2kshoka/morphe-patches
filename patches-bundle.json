@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-22T21:52:24",
-  "description": "## [1.1.0](https://github.com/2kshoka/morphe-patches/compare/v1.0.0...v1.1.0) (2026-11-22)\n\n### ✨ New Features\n\n* add translations ([d4cd867](https://github.com/2kshoka/morphe-patches/commit/d4cd867296983fbd309a0353be5d65fd6b8b969c))",
-  "download_url": "https://github.com/2kshoka/morphe-patches/releases/download/v1.1.0/patches-1.1.0.mpp",
+  "created_at": "2026-11-25T00:06:24",
+  "description": "## [1.1.1](https://github.com/2kshoka/morphe-patches/compare/v1.1.0...v1.1.1) (2026-11-25)\n\n### 🐛 Bug Fixes\n\n* Update included patches count in README ([bb67ecf](https://github.com/2kshoka/morphe-patches/commit/bb67ecf3da88c961f7498c9d804ec3826eadbb9b))",
+  "download_url": "https://github.com/2kshoka/morphe-patches/releases/download/v1.1.1/patches-1.1.1.mpp",
   "signature_download_url": "",
-  "version": "1.1.0"
+  "version": "1.1.1"
 }

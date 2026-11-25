@@ -1,3 +1,9 @@
+## [1.1.1](https://github.com/2kshoka/morphe-patches/compare/v1.1.0...v1.1.1) (2026-11-25)
+
+### 🐛 Bug Fixes
+
+* Update included patches count in README ([bb67ecf](https://github.com/2kshoka/morphe-patches/commit/bb67ecf3da88c961f7498c9d804ec3826eadbb9b))
+
 ## [1.1.0](https://github.com/2kshoka/morphe-patches/compare/v1.0.0...v1.1.0) (2026-11-22)
 
 ### ✨ New Features
