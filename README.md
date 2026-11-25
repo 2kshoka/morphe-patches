@@ -24,7 +24,7 @@ Or add the repository URL manually in **Morphe Manager → Settings → Sources*
 
 ---
 
-## Included Patches (`9` Patches — `7` Enabled by Default, `2` Opt-in)
+## Included Patches (`10` Patches — `8` Enabled by Default, `2` Opt-in)
 
 <!-- PATCHES_START EXPANDED -->
 > **[v1.3.0-sleeptimer.12](https://github.com/2kshoka/morphe-patches/releases/tag/v1.3.0-sleeptimer.12)**&nbsp;&nbsp;•&nbsp;&nbsp;`Sleeptimer`&nbsp;&nbsp;•&nbsp;&nbsp;10 patches total
