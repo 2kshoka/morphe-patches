@@ -32,6 +32,12 @@ final class SleepTimerDial extends View {
 
         /** Called when the finger is held on the dial. */
         void onLongPressSave(int minutes);
+
+        /** A tap in the centre: starts the timer, or stops it while it runs. */
+        void onCenterTap();
+
+        /** The "+5 min" button, shown instead of the caption while the timer runs. */
+        void onAddTime();
     }
 
     private static final int ACCENT = 0xFFFF5500; // SoundCloud orange
@@ -39,6 +45,16 @@ final class SleepTimerDial extends View {
     private static final long HAPTIC_MIN_INTERVAL_MS = 25;
     private static final double SNAP_RATE = 18.0;
     private static final double JUMP_RATE = 9.0;
+    /** Hold time to save a value; the indicator starts after a short delay so that taps stay clean. */
+    private static final long HOLD_MS = 800;
+    private static final long HOLD_INDICATOR_DELAY_MS = 120;
+    private static final long HOLD_FADE_MS = 320;
+    /** While the timer runs the handle glides to the time left with the same easing as a jump. */
+    private static final double FOLLOW_RATE = 9.0;
+    private static final String ADD_LABEL = "+5 мин";
+    private static final int RUN_NONE = 0;
+    private static final int RUN_PILL = 1;
+    private static final int RUN_CENTRE = 2;
 
     private static final int PHASE_IDLE = 0;
     private static final int PHASE_FLING = 1;
@@ -60,7 +76,13 @@ final class SleepTimerDial extends View {
     private final Paint handleRingPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint mainTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint subTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint holdPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint pillFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint pillStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint pillTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final RectF oval = new RectF();
+    private final RectF holdOval = new RectF();
+    private final RectF pillRect = new RectF();
 
     private float cx;
     private float cy;
@@ -69,6 +91,7 @@ final class SleepTimerDial extends View {
     private float handleRadius;
     private float innerTouchRadius;
     private float outerTouchRadius;
+    private float centreRadius;
     private float[] minorTicks = new float[0];
     private float[] majorTicks = new float[0];
 
@@ -82,6 +105,8 @@ final class SleepTimerDial extends View {
     private boolean dragging;
     private boolean longPressFired;
     private boolean touchedCentre;
+    private boolean tapCandidate;
+    private boolean moved;
     private float downX;
     private float downY;
     private int lastMinute = SleepTimerMath.MIN_MINUTES;
@@ -91,6 +116,18 @@ final class SleepTimerDial extends View {
     private long lastFrameAt;
     private double animTarget;
     private double animRate = SNAP_RATE;
+
+    // running countdown: the displayed handle angle glides towards the angle of the time left
+    private double runDeg;
+    private double runTarget;
+    private boolean following;
+    private boolean everSynced;
+    private int runGesture = RUN_NONE;
+    private boolean pillPressed;
+
+    // hold-to-save indicator
+    private long holdStartAt;
+    private long holdDoneAt;
 
     SleepTimerDial(Context context, boolean dark) {
         super(context);
@@ -119,6 +156,14 @@ final class SleepTimerDial extends View {
         mainTextPaint.setColor(textColor);
         subTextPaint.setTextAlign(Paint.Align.CENTER);
         subTextPaint.setColor(subTextColor);
+        holdPaint.setStyle(Paint.Style.STROKE);
+        holdPaint.setStrokeCap(Paint.Cap.ROUND);
+        pillFillPaint.setStyle(Paint.Style.FILL);
+        pillStrokePaint.setStyle(Paint.Style.STROKE);
+        pillStrokePaint.setColor(ACCENT);
+        pillTextPaint.setTextAlign(Paint.Align.CENTER);
+        pillTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
+        pillTextPaint.setColor(ACCENT);
         setHapticFeedbackEnabled(true);
         setContentDescription("Круговой выбор времени таймера сна");
     }
@@ -134,7 +179,13 @@ final class SleepTimerDial extends View {
 
     /** Selects a value; with animate=true the handle glides there (any number of turns). */
     void setSelectedMinutes(int minutes, boolean animate) {
-        if (running) return;
+        if (running) {
+            // The countdown shows the time left; only remember what to return to after a stop.
+            drag.total = SleepTimerMath.degreesOf(minutes);
+            lastMinute = SleepTimerMath.minutesOf(drag.total);
+            if (listener != null) listener.onMinutesChanged(lastMinute);
+            return;
+        }
         stopMotion();
         double target = SleepTimerMath.degreesOf(minutes);
         if (animate) {
@@ -149,11 +200,41 @@ final class SleepTimerDial extends View {
         if (listener != null) listener.onMinutesChanged(lastMinute);
     }
 
-    /** Switches between the selector and the read-only countdown. */
+    /**
+     * Switches between the selector and the countdown. While running, the handle glides to the
+     * angle of the time left (so "+5 min" and a restart with another value are animated) and the
+     * dial is no longer dragged. When the timer ends or is stopped, the handle glides back to the
+     * value that was selected.
+     */
     void setRunning(boolean running, long remainingMillis) {
-        if (running && !this.running) stopMotion();
-        this.running = running;
+        boolean was = this.running;
         this.remainingMillis = Math.max(0, remainingMillis);
+        if (running) {
+            runTarget = this.remainingMillis / 60_000.0 * SleepTimerMath.DEGREES_PER_MINUTE;
+            if (!was) {
+                // keep a glide that is still going on: the chosen value is its target
+                double selection = phase == PHASE_ANIMATE ? animTarget : drag.total;
+                double shown = drag.total;
+                stopMotion();
+                drag.total = selection;
+                // a window that opens on an already running timer starts at the time left, no glide
+                runDeg = everSynced ? shown : runTarget;
+            }
+            this.running = true;
+            startFollow();
+        } else if (was) {
+            this.running = false;
+            stopFollow();
+            // glide from the countdown position back to the selected value
+            double selection = drag.total;
+            drag.total = SleepTimerMath.clampDegrees(runDeg);
+            animTarget = selection;
+            animRate = JUMP_RATE;
+            lastMinute = SleepTimerMath.minutesOf(selection);
+            startFrames(PHASE_ANIMATE);
+            if (listener != null) listener.onMinutesChanged(lastMinute);
+        }
+        everSynced = true;
         invalidate();
     }
 
@@ -174,7 +255,9 @@ final class SleepTimerDial extends View {
         ringRadius = size / 2f - handleRadius - dp(2);
         oval.set(cx - ringRadius, cy - ringRadius, cx + ringRadius, cy + ringRadius);
         innerTouchRadius = ringRadius * 0.35f;
+        centreRadius = ringRadius * 0.64f;
         outerTouchRadius = size / 2f + dp(8);
+        holdOval.set(cx - centreRadius, cy - centreRadius, cx + centreRadius, cy + centreRadius);
 
         trackPaint.setStrokeWidth(strokeWidth);
         doneTurnsPaint.setStrokeWidth(strokeWidth);
@@ -182,6 +265,8 @@ final class SleepTimerDial extends View {
         minorTickPaint.setStrokeWidth(Math.max(1f, dp(1)));
         majorTickPaint.setStrokeWidth(Math.max(2f, dp(2)));
         handleRingPaint.setStrokeWidth(Math.max(2f, dp(2.5f)));
+        holdPaint.setStrokeWidth(Math.max(2f, dp(3f)));
+        pillStrokePaint.setStrokeWidth(Math.max(1.5f, dp(1.5f)));
         mainTextPaint.setTextSize(size * 0.22f);
         subTextPaint.setTextSize(size * 0.072f);
 
@@ -209,9 +294,7 @@ final class SleepTimerDial extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        double total = running
-            ? Math.max(0, remainingMillis / 60_000.0 * SleepTimerMath.DEGREES_PER_MINUTE)
-            : drag.total;
+        double total = running ? Math.max(0, runDeg) : drag.total;
 
         canvas.drawCircle(cx, cy, ringRadius, trackPaint);
         canvas.drawLines(minorTicks, minorTickPaint);
@@ -225,24 +308,22 @@ final class SleepTimerDial extends View {
         double theta = Math.toRadians(sweep);
         float hx = cx + ringRadius * (float) Math.sin(theta);
         float hy = cy - ringRadius * (float) Math.cos(theta);
-        float hr = dragging ? handleRadius * 1.18f : handleRadius;
+        float hr = (dragging && !touchedCentre) ? handleRadius * 1.18f : handleRadius;
         canvas.drawCircle(hx, hy, hr, handlePaint);
         canvas.drawCircle(hx, hy, hr, handleRingPaint);
 
-        String main;
-        String sub;
-        String sub2 = null;
+        drawHoldIndicator(canvas);
+
         if (running) {
-            main = SleepTimerMath.formatClock(remainingMillis);
-            sub = "осталось";
-            mainTextPaint.setTextSize(Math.min(getWidth(), getHeight()) * (main.length() > 5 ? 0.15f : 0.19f));
-        } else {
-            int minutes = SleepTimerMath.minutesOf(drag.total);
-            main = String.valueOf(minutes);
-            sub = "мин";
-            if (minutes >= 60) sub2 = SleepTimerMath.formatMinutes(minutes);
-            mainTextPaint.setTextSize(Math.min(getWidth(), getHeight()) * (main.length() > 3 ? 0.17f : 0.22f));
+            drawCountdownCentre(canvas);
+            return;
         }
+
+        int minutes = SleepTimerMath.minutesOf(drag.total);
+        String main = String.valueOf(minutes);
+        String sub = "мин";
+        String sub2 = minutes >= 60 ? SleepTimerMath.formatMinutes(minutes) : null;
+        mainTextPaint.setTextSize(Math.min(getWidth(), getHeight()) * (main.length() > 3 ? 0.17f : 0.22f));
         Paint.FontMetrics mf = mainTextPaint.getFontMetrics();
         Paint.FontMetrics sf = subTextPaint.getFontMetrics();
         float mainH = mf.descent - mf.ascent;
@@ -256,6 +337,61 @@ final class SleepTimerDial extends View {
         if (sub2 != null) canvas.drawText(sub2, cx, y + subH + gap - sf.ascent, subTextPaint);
     }
 
+    /** Ring that fills while the finger is held (after a short delay) and fades out once saved. */
+    private void drawHoldIndicator(Canvas canvas) {
+        if (running) return;
+        long now = SystemClock.uptimeMillis();
+        if (holdStartAt != 0) {
+            float p = (now - holdStartAt - HOLD_INDICATOR_DELAY_MS) / (float) (HOLD_MS - HOLD_INDICATOR_DELAY_MS);
+            if (p <= 0f) return;
+            p = Math.min(1f, p);
+            holdPaint.setColor((ACCENT & 0x00FFFFFF) | 0x33000000);
+            canvas.drawCircle(cx, cy, centreRadius, holdPaint);
+            holdPaint.setColor(ACCENT);
+            canvas.drawArc(holdOval, -90f, 360f * p, false, holdPaint);
+        } else if (holdDoneAt != 0) {
+            float f = (now - holdDoneAt) / (float) HOLD_FADE_MS;
+            if (f >= 1f) return;
+            int alpha = (int) (255 * (1f - f));
+            holdPaint.setColor((ACCENT & 0x00FFFFFF) | (alpha << 24));
+            canvas.drawCircle(cx, cy, centreRadius * (1f + 0.06f * f), holdPaint);
+        }
+    }
+
+    /** Centre while the timer runs: the clock and a "+5 min" button instead of a caption. */
+    private void drawCountdownCentre(Canvas canvas) {
+        float size = Math.min(getWidth(), getHeight());
+        String main = SleepTimerMath.formatClock(remainingMillis);
+        mainTextPaint.setTextSize(size * (main.length() > 5 ? 0.15f : 0.19f));
+        pillTextPaint.setTextSize(size * 0.072f);
+
+        Paint.FontMetrics mf = mainTextPaint.getFontMetrics();
+        Paint.FontMetrics pf = pillTextPaint.getFontMetrics();
+        float mainH = mf.descent - mf.ascent;
+        float textH = pf.descent - pf.ascent;
+        float padX = size * 0.045f;
+        float padY = size * 0.02f;
+        float pillW = pillTextPaint.measureText(ADD_LABEL) + 2 * padX;
+        float pillH = textH + 2 * padY;
+        float gap = size * 0.03f;
+
+        float top = cy - (mainH + gap + pillH) / 2f;
+        canvas.drawText(main, cx, top - mf.ascent, mainTextPaint);
+
+        float pillTop = top + mainH + gap;
+        pillRect.set(cx - pillW / 2f, pillTop, cx + pillW / 2f, pillTop + pillH);
+        pillFillPaint.setColor((ACCENT & 0x00FFFFFF) | (pillPressed ? 0x66000000 : 0x26000000));
+        canvas.drawRoundRect(pillRect, pillH / 2f, pillH / 2f, pillFillPaint);
+        canvas.drawRoundRect(pillRect, pillH / 2f, pillH / 2f, pillStrokePaint);
+        canvas.drawText(ADD_LABEL, cx, pillTop + padY - pf.ascent, pillTextPaint);
+    }
+
+    private boolean pillHit(float x, float y) {
+        float m = dp(8);
+        return running && x >= pillRect.left - m && x <= pillRect.right + m
+            && y >= pillRect.top - m && y <= pillRect.bottom + m;
+    }
+
     // ---- touch -------------------------------------------------------------------------------
 
     private final Runnable longPress = new Runnable() {
@@ -263,6 +399,10 @@ final class SleepTimerDial extends View {
         public void run() {
             if (!dragging || longPressFired) return;
             longPressFired = true;
+            holdStartAt = 0;
+            holdDoneAt = SystemClock.uptimeMillis();
+            removeCallbacks(holdFrame);
+            postOnAnimation(holdFrame);
             int minutes = getSelectedMinutes();
             performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
             if (listener != null) listener.onLongPressSave(minutes);
@@ -271,34 +411,43 @@ final class SleepTimerDial extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (running) return false;
         float dx = event.getX() - cx;
         float dy = event.getY() - cy;
         double dist = Math.hypot(dx, dy);
+        if (running) return onRunningTouch(event, dist);
 
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN: {
                 if (dist > outerTouchRadius) return false;
                 if (getParent() != null) getParent().requestDisallowInterceptTouchEvent(true);
-                stopMotion();
+                boolean centre = dist < centreRadius;
+                // A tap in the centre must not disturb a glide that is still going on.
+                if (!centre) stopMotion();
                 velocity.clear();
-                touchedCentre = dist < innerTouchRadius;
-                if (!touchedCentre) drag.down(SleepTimerMath.angleOf(dx, dy));
+                touchedCentre = centre;
+                tapCandidate = centre;
+                moved = false;
+                if (!centre) drag.down(SleepTimerMath.angleOf(dx, dy));
                 dragging = true;
                 longPressFired = false;
                 downX = event.getX();
                 downY = event.getY();
                 velocity.add(event.getEventTime(), drag.total);
                 notifyMinuteChange(true);
-                postDelayed(longPress, ViewConfiguration.getLongPressTimeout());
+                startHold();
                 invalidate();
                 return true;
             }
             case MotionEvent.ACTION_MOVE: {
                 if (!dragging) return false;
                 if (longPressFired) return true;
-                if (Math.hypot(event.getX() - downX, event.getY() - downY) > touchSlop) removeCallbacks(longPress);
-                if (dist >= innerTouchRadius) {
+                if (!moved && Math.hypot(event.getX() - downX, event.getY() - downY) > touchSlop) {
+                    moved = true;
+                    tapCandidate = false;
+                    cancelHold();
+                    if (touchedCentre) stopMotion(); // a drag that started in the centre takes over
+                }
+                if (dist >= innerTouchRadius && (!touchedCentre || moved)) {
                     // Leaving the centre mid-gesture starts following from the current finger angle.
                     if (touchedCentre) {
                         drag.down(SleepTimerMath.angleOf(dx, dy));
@@ -315,9 +464,20 @@ final class SleepTimerDial extends View {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL: {
                 if (!dragging) return false;
-                removeCallbacks(longPress);
+                cancelHold();
                 dragging = false;
                 boolean cancelled = event.getActionMasked() == MotionEvent.ACTION_CANCEL;
+                if (tapCandidate && !moved && !longPressFired && !cancelled) {
+                    tapCandidate = false;
+                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                    invalidate();
+                    if (listener != null) listener.onCenterTap();
+                    return true;
+                }
+                if (touchedCentre && !moved) { // held (or cancelled) in the centre without any drag
+                    invalidate();
+                    return true;
+                }
                 if (!longPressFired && !cancelled && !touchedCentre) {
                     inertia.start(velocity.perSecond(event.getEventTime()));
                 }
@@ -331,6 +491,54 @@ final class SleepTimerDial extends View {
                 invalidate();
                 return true;
             }
+            default:
+                return true;
+        }
+    }
+
+    /** While the timer runs the dial is not dragged: the centre stops it, the pill adds time. */
+    private boolean onRunningTouch(MotionEvent event, double dist) {
+        float x = event.getX();
+        float y = event.getY();
+        switch (event.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                if (dist > outerTouchRadius) return false;
+                if (pillHit(x, y)) runGesture = RUN_PILL;
+                else if (dist < centreRadius) runGesture = RUN_CENTRE;
+                else return false;
+                pillPressed = runGesture == RUN_PILL;
+                downX = x;
+                downY = y;
+                if (getParent() != null) getParent().requestDisallowInterceptTouchEvent(true);
+                invalidate();
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                if (runGesture == RUN_NONE) return false;
+                if (Math.hypot(x - downX, y - downY) > touchSlop) {
+                    runGesture = RUN_NONE;
+                    pillPressed = false;
+                    invalidate();
+                }
+                return true;
+            case MotionEvent.ACTION_UP: {
+                int gesture = runGesture;
+                runGesture = RUN_NONE;
+                pillPressed = false;
+                invalidate();
+                if (gesture == RUN_PILL && pillHit(x, y)) {
+                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                    if (listener != null) listener.onAddTime();
+                } else if (gesture == RUN_CENTRE && dist < centreRadius) {
+                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                    if (listener != null) listener.onCenterTap();
+                }
+                return gesture != RUN_NONE;
+            }
+            case MotionEvent.ACTION_CANCEL:
+                runGesture = RUN_NONE;
+                pillPressed = false;
+                invalidate();
+                return true;
             default:
                 return true;
         }
@@ -377,6 +585,71 @@ final class SleepTimerDial extends View {
         }
     };
 
+    private final Runnable holdFrame = new Runnable() {
+        @Override
+        public void run() {
+            long now = SystemClock.uptimeMillis();
+            boolean again = false;
+            if (holdStartAt != 0) {
+                again = true;
+            } else if (holdDoneAt != 0) {
+                if (now - holdDoneAt < HOLD_FADE_MS) again = true;
+                else holdDoneAt = 0;
+            }
+            invalidate();
+            if (again) postOnAnimation(this);
+        }
+    };
+
+    private void startHold() {
+        removeCallbacks(longPress);
+        holdStartAt = SystemClock.uptimeMillis();
+        holdDoneAt = 0;
+        postDelayed(longPress, HOLD_MS);
+        removeCallbacks(holdFrame);
+        postOnAnimation(holdFrame);
+    }
+
+    private void cancelHold() {
+        removeCallbacks(longPress);
+        holdStartAt = 0;
+        invalidate();
+    }
+
+    private final Runnable followFrame = new Runnable() {
+        @Override
+        public void run() {
+            long now = SystemClock.uptimeMillis();
+            double dt = Math.min(0.05, Math.max(0.0, (now - followLastAt) / 1000.0));
+            followLastAt = now;
+            double diff = runTarget - runDeg;
+            boolean again = false;
+            if (Math.abs(diff) < 0.02) {
+                runDeg = runTarget;
+                following = false;
+            } else {
+                runDeg += diff * (1.0 - Math.exp(-FOLLOW_RATE * dt));
+                again = true;
+            }
+            invalidate();
+            if (again) postOnAnimation(this);
+        }
+    };
+    private long followLastAt;
+
+    private void startFollow() {
+        if (following) return;
+        following = true;
+        followLastAt = SystemClock.uptimeMillis();
+        removeCallbacks(followFrame);
+        postOnAnimation(followFrame);
+    }
+
+    private void stopFollow() {
+        following = false;
+        removeCallbacks(followFrame);
+    }
+
     private void startFrames(int newPhase) {
         phase = newPhase;
         lastFrameAt = SystemClock.uptimeMillis();
@@ -387,6 +660,9 @@ final class SleepTimerDial extends View {
     private void stopMotion() {
         removeCallbacks(frame);
         removeCallbacks(longPress);
+        removeCallbacks(holdFrame);
+        holdStartAt = 0;
+        holdDoneAt = 0;
         inertia.stop();
         phase = PHASE_IDLE;
     }
@@ -413,6 +689,7 @@ final class SleepTimerDial extends View {
     @Override
     protected void onDetachedFromWindow() {
         stopMotion();
+        stopFollow();
         super.onDetachedFromWindow();
     }
 }

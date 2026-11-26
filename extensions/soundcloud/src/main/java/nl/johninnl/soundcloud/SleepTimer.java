@@ -88,5 +88,20 @@ public static void stop(Context context) {
     set(context.getApplicationContext(), 0);
 }
 
+/**
+ * Adds minutes to a running timer: the pending pause is re-posted for (time left + minutes),
+ * the same mechanism set() uses. Does nothing when no timer is running.
+ */
+public static void extend(Context context, int minutes) {
+    if (context == null || minutes <= 0 || pending == null) return;
+    Context app = context.getApplicationContext();
+    long left = Math.max(0, endAtUptime - SystemClock.uptimeMillis());
+    long delay = left + minutes * 60_000L;
+    HANDLER.removeCallbacks(pending);
+    pending = () -> { pending = null; pause(app); };
+    endAtUptime = SystemClock.uptimeMillis() + delay;
+    HANDLER.postDelayed(pending, delay);
+}
+
     private SleepTimer() {}
 }
