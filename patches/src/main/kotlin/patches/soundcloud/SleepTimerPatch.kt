@@ -177,8 +177,7 @@ internal val sleepTimerResourcePatch = resourcePatch {
 @Suppress("unused")
 val sleepTimerMenuPatch = bytecodePatch(
     name = "Sleep timer in track menu",
-    description = "Adds a \"Таймер сна\" item to the track menu. It opens a dialog with 15, 30, 45 and " +
-        "60 minute options and pauses playback when the time is up.",
+    description = "Adds a customizable sleep timer to SoundCloud with a circular time selector, saved presets, and one-tap controls to start, stop, or extend playback time.",
     default = true,
 ) {
     compatibleWith(soundcloud)
