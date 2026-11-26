@@ -11,6 +11,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.smali.ExternalLabel
 import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
@@ -26,7 +27,12 @@ import javax.xml.parsers.DocumentBuilderFactory
 
 private const val ROOT = "Lcom/soundcloud/android/"
 private const val MENU_ITEM = "${ROOT}features/bottomsheet/track/TrackMenuItem;"
-private const val INFO_ITEM = "${ROOT}features/bottomsheet/track/TrackMenuItem\$Info;"
+/**
+ * The menu item the Sleep timer is placed directly above. To move it, change this to another
+ * TrackMenuItem subclass (for example SelectiveDownload for "Download"), but only pick one whose
+ * creation is not a branch target in the mapper (see the notes in step 2 below).
+ */
+private const val ANCHOR_ITEM = "${ROOT}features/bottomsheet/track/TrackMenuItem\$AddToPlaylist;"
 private const val SLEEP_ITEM = "Lnl/johninnl/soundcloud/SleepTimerMenuItem;"
 private const val ENTRY = "Lnl/johninnl/soundcloud/SleepTimerEntry;"
 private const val OBJECT = "Ljava/lang/Object;"
@@ -140,8 +146,8 @@ internal val sleepTimerResourcePatch = resourcePatch {
 @Suppress("unused")
 val sleepTimerMenuPatch = bytecodePatch(
     name = "Sleep timer in track menu",
-    description = "Adds a \"Таймер сна\" item to the track menu. It opens a dialog with circular sleep timer and " +
-        "pauses playback when the time is up.",
+    description = "Adds a \"Таймер сна\" item to the track menu. It opens a dialog with 15, 30, 45 and " +
+        "60 minute options and pauses playback when the time is up.",
     default = true,
 ) {
     compatibleWith(soundcloud)
@@ -179,35 +185,52 @@ val sleepTimerMenuPatch = bytecodePatch(
             "invoke-static {p0}, $ENTRY->attach(Landroid/app/Activity;)V",
         )
 
-        // 2. Create the item. TrackBottomSheetDataMapper$from$1$3.a() builds the menu list:
-        //      invoke-static {vDivider, vSrc}, CollectionsKt->j0(Object, Collection)ArrayList
-        //      move-result-object v0                  <- the list
-        //      new-instance v2, TrackMenuItem$Info     <- insert right before this
+        // 2. Create the item, right above "Add to playlist". The list is built by appending in
+        //    code order, so an item added earlier is shown higher. TrackBottomSheetDataMapper$from$1$3.a():
         //      ...
-        //      invoke-static {v2, v0}, CollectionsKt->j0(...) ; move-result-object v0
-        //    (checked against the smali of SoundCloud 2026.11.16-release). v2 is the destination of
-        //    the new-instance below, so it is free here; v0 is the list. No branch targets the
-        //    new-instance instruction, so a plain insertion is seen on every path.
+        //      invoke-virtual {v9}, Object->getClass()        (no label here)
+        //      new-instance v12, TrackMenuItem$AddToPlaylist   <- insert right before this
+        //      invoke-direct {v12, v15, v9}, ...
+        //      if-nez v19, :cond_11
+        //      invoke-static {v12, v13}, CollectionsKt->j0(Object, Collection)ArrayList
+        //      move-result-object v13                          <- v13 is the list
+        //      :cond_11
+        //    (checked against the smali of SoundCloud 2026.11.16-release). v12 is the destination of
+        //    that new-instance, so it is free at the insertion point; the list register is taken from
+        //    the item's own add call. A plain insertion is only safe where no branch jumps to the
+        //    instruction, which holds here; the instruction after the add call is a branch target
+        //    (:cond_11), so inserting after the block would be skipped when the item is hidden.
         val mapper = exact("features/bottomsheet/track/TrackBottomSheetDataMapper\$from\$1\$3",
             "a", OBJECT, OBJECT, OBJECT, OBJECT, OBJECT, OBJECT)
         val list = mapper.instructions.toList()
-        val infoIndex = list.withIndex().filter { (_, instruction) ->
+        val anchorIndex = list.withIndex().filter { (_, instruction) ->
             instruction.opcode == Opcode.NEW_INSTANCE &&
-                ((instruction as ReferenceInstruction).reference as? TypeReference)?.type == INFO_ITEM
+                ((instruction as ReferenceInstruction).reference as? TypeReference)?.type == ANCHOR_ITEM
         }.map { it.index }.singleOrNull()
-            ?: throw PatchException("SoundCloud track menu Info item creation changed")
-        if (infoIndex < 2) throw PatchException("SoundCloud track menu Info item is at the method start")
+            ?: throw PatchException("SoundCloud track menu anchor item creation changed")
 
-        val moveResult = list[infoIndex - 1]
-        val addCall = list[infoIndex - 2]
-        val addRef = (addCall as? ReferenceInstruction)?.reference as? MethodReference
-        if (moveResult.opcode != Opcode.MOVE_RESULT_OBJECT || addCall.opcode != Opcode.INVOKE_STATIC ||
-            addRef == null || addRef.definingClass != KOTLIN_COLLECTIONS ||
-            addRef.parameterTypes.map { it.toString() } != listOf(OBJECT, COLLECTION))
-            throw PatchException("SoundCloud track menu list 'add item' call changed")
+        val freeRegister = (list[anchorIndex] as OneRegisterInstruction).registerA
 
-        val listRegister = (moveResult as OneRegisterInstruction).registerA
-        val freeRegister = (list[infoIndex] as OneRegisterInstruction).registerA
+        // The anchor item's own "add to list" call: element = the new item, second argument = the list.
+        var addCallIndex = -1
+        for (i in anchorIndex + 1..minOf(anchorIndex + 12, list.lastIndex)) {
+            val candidate = list[i]
+            val ref = (candidate as? ReferenceInstruction)?.reference as? MethodReference ?: continue
+            if (candidate.opcode == Opcode.INVOKE_STATIC && ref.definingClass == KOTLIN_COLLECTIONS &&
+                ref.parameterTypes.map { it.toString() } == listOf(OBJECT, COLLECTION) &&
+                candidate is FiveRegisterInstruction && candidate.registerC == freeRegister) {
+                addCallIndex = i
+                break
+            }
+        }
+        if (addCallIndex < 0) throw PatchException("SoundCloud track menu anchor 'add item' call not found")
+        val addCall = list[addCallIndex] as FiveRegisterInstruction
+        val addRef = (addCall as ReferenceInstruction).reference as MethodReference
+        val listRegister = addCall.registerD
+        val moveResult = list.getOrNull(addCallIndex + 1)
+        if (moveResult == null || moveResult.opcode != Opcode.MOVE_RESULT_OBJECT ||
+            (moveResult as OneRegisterInstruction).registerA != listRegister)
+            throw PatchException("SoundCloud track menu list register changed")
         if (listRegister > 15 || freeRegister > 15)
             throw PatchException("SoundCloud track menu registers are out of 4-bit range")
 
@@ -216,7 +239,7 @@ val sleepTimerMenuPatch = bytecodePatch(
         val addSmali = "${addRef.definingClass}->${addRef.name}" +
             "(${addRef.parameterTypes.joinToString("")})${addRef.returnType}"
         mapper.addInstructions(
-            infoIndex,
+            anchorIndex,
             """
                 new-instance v$freeRegister, $SLEEP_ITEM
                 invoke-direct {v$freeRegister}, $SLEEP_ITEM-><init>()V
@@ -225,7 +248,6 @@ val sleepTimerMenuPatch = bytecodePatch(
             """,
         )
 
-        
         // 3. Click handling.
         // The clicked TrackMenuItem is stored in Lks/j;->b.
         // Tag 4 dispatches to the TrackBottomSheetFragment menu handler.
