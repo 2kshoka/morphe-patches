@@ -1,3 +1,9 @@
+## [1.5.3](https://github.com/2kshoka/morphe-patches/compare/v1.5.2...v1.5.3) (2026-11-26)
+
+### 🐛 Bug Fixes
+
+* Modify Sleep Timer icon size and stroke properties ([c4799a8](https://github.com/2kshoka/morphe-patches/commit/c4799a8a493b0df409b9eaa2178ae268b7aa9749))
+
 ## [1.5.2](https://github.com/2kshoka/morphe-patches/compare/v1.5.1...v1.5.2) (2026-11-26)
 
 ### 🐛 Bug Fixes
