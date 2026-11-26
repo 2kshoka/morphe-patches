@@ -1,3 +1,9 @@
+## [1.5.0](https://github.com/2kshoka/morphe-patches/compare/v1.4.1...v1.5.0) (2026-11-26)
+
+### ✨ New Features
+
+* Update SleepTimer ([87921b2](https://github.com/2kshoka/morphe-patches/commit/87921b272fa5c5b22fa0a6e0f6048ac0425e4877))
+
 ## [1.4.1](https://github.com/2kshoka/morphe-patches/compare/v1.4.0...v1.4.1) (2026-11-25)
 
 ### 🐛 Bug Fixes
