@@ -1,3 +1,9 @@
+## [1.5.5](https://github.com/2kshoka/morphe-patches/compare/v1.5.4...v1.5.5) (2026-11-26)
+
+### 🐛 Bug Fixes
+
+* icon scaling ([865cff1](https://github.com/2kshoka/morphe-patches/commit/865cff1ca58b0e5bbc69c73a84c5f54951930911))
+
 ## [1.5.4](https://github.com/2kshoka/morphe-patches/compare/v1.5.3...v1.5.4) (2026-11-26)
 
 ### 🐛 Bug Fixes
