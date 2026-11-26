@@ -27,7 +27,7 @@ Or add the repository URL manually in **Morphe Manager → Settings → Sources*
 ## Included Patches (`10` Patches — `8` Enabled by Default, `2` Opt-in)
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.5.3](https://github.com/2kshoka/morphe-patches/releases/tag/v1.5.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;10 patches total
+> **[v1.5.4](https://github.com/2kshoka/morphe-patches/releases/tag/v1.5.4)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;10 patches total
 <details open>
 <summary>📦 SoundCloud&nbsp;&nbsp;•&nbsp;&nbsp;10 patches</summary>
 <br>

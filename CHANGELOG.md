@@ -1,3 +1,9 @@
+## [1.5.4](https://github.com/2kshoka/morphe-patches/compare/v1.5.3...v1.5.4) (2026-11-26)
+
+### 🐛 Bug Fixes
+
+* Update SleepTimerPatch.kt ([afefcdc](https://github.com/2kshoka/morphe-patches/commit/afefcdc0fdd833317a7371ca15d2deedb2375143))
+
 ## [1.5.3](https://github.com/2kshoka/morphe-patches/compare/v1.5.2...v1.5.3) (2026-11-26)
 
 ### 🐛 Bug Fixes
