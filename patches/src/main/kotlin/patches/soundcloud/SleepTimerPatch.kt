@@ -49,11 +49,16 @@ private const val ICON_NAME = "morphe_sleep_timer_icon"
  */
 private val SLEEP_TIMER_ICON_XML = """<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="32dp"
-    android:height="32dp"
-    android:viewportWidth="32"
-    android:viewportHeight="32"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
     android:tint="?android:attr/textColorPrimary">
+    <group
+    android:pivotX="12"
+    android:pivotY="12"
+    android:scaleX="1.2"
+    android:scaleY="1.2">
     <path
         android:pathData="M12,3.6a8.4,8.4 0,1 1,0 16.8a8.4,8.4 0,1 1,0 -16.8z"
         android:strokeWidth="1.6"
@@ -64,6 +69,7 @@ private val SLEEP_TIMER_ICON_XML = """<?xml version="1.0" encoding="utf-8"?>
         android:strokeLineCap="round"
         android:strokeLineJoin="round"
         android:strokeColor="#FFFFFFFF" />
+        </group>
 </vector>
 """
 
